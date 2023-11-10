@@ -5,8 +5,10 @@ const BUILDINGS: SimpleBuildingProps[] = [
         id: "earthResearchFacility",
         label: "Research Facility",
         planet: "earth",
-        requiredMoney: 100,
-        requiredResources: {meteorite: 500},
+        price: [
+            {type: "basicStats", id: "money", label: "Money", amount: 100},
+            {type: "resource", id: "stone", label: "Stone", amount: 500},
+        ],
         unlockRequirements: [
             {
                 type: "keyItem",
@@ -17,11 +19,31 @@ const BUILDINGS: SimpleBuildingProps[] = [
         obtained: false,
     },
     {
+        id: "earthStoneQuarry",
+        label: "Stone Quarry",
+        planet: "earth",
+        price: [
+            {type: "basicStats", id: "money", label: "Money", amount: 100},
+            {type: "resource", id: "stone", label: "Stone", amount: 500},
+        ],
+        unlockRequirements: [
+            {
+                type: "resource",
+                id: "stone",
+                amount: 250,
+            },
+        ],
+        description: "Research Facility will help you discover new technologies and further progress your space exploration adventure.",
+        obtained: false,
+    },
+    {
         id: "earthMeteoriteMine",
         label: "Meteorite Mine",
         planet: "earth",
-        requiredMoney: 500,
-        requiredResources: {meteorite: 1000},
+        price: [
+            {type: "basicStats", id: "money", label: "Money", amount: 500},
+            {type: "resource", id: "stone", label: "Stone", amount: 1000},
+        ],
         unlockRequirements: [
             {
                 type: "basicStats",

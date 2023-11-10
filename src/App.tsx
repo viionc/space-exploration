@@ -1,10 +1,10 @@
 import BuildingsPanel from "./components/BuildingsPanel";
 import Header from "./components/Header";
 import KeyItemsPanel from "./components/KeyItemsPanel";
-import MoneyGenerators from "./components/MoneyGenerators";
+import MoneyGenerators from "./components/MoneyGeneratorsPanel";
 import MoneyUpgradesPanel from "./components/MoneyUpgradesPanel";
 import ResearchPanel from "./components/ResearchPanel";
-import ResourceGenerators from "./components/ResourceGenerators";
+import ResourceGenerators from "./components/ResourceGeneratorsPanel";
 import ResourcesPanel from "./components/ResourcesPanel";
 import GameStateContextProvider from "./game-state/GameStateContext";
 

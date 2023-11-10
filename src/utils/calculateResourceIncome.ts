@@ -7,7 +7,7 @@ const calculateResourceIncome = (upgrades: SimpleUpgradeProps[]): number => {
         multi *= upgrade.multiplier;
     });
     result = 1 * multi;
-    return Math.floor(result);
+    return Math.ceil(result);
 };
 
 export default calculateResourceIncome;

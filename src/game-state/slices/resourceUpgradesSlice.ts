@@ -1,11 +1,11 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {ResourceUpgrades} from "../../types/types";
+import {ResourceUpgradesNames} from "../../types/types";
 
-const initialState: Partial<Record<ResourceUpgrades, boolean>> = {};
+const initialState: Partial<Record<ResourceUpgradesNames, boolean>> = {};
 
 export type ResourceUpgradesReducerAction = {
     payload: {
-        id: ResourceUpgrades;
+        id: ResourceUpgradesNames;
     };
     type: string;
 };

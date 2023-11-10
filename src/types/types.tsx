@@ -17,12 +17,35 @@ export type ResourcesProps = {
 };
 
 export type UpgradesProps = {
-    meteorite: Partial<Record<ResourceUpgrades, boolean>>;
+    meteorite: Partial<Record<ResourceUpgradesNames, boolean>>;
 };
 
-export type ResourceUpgrades = keyof EarthMeteoriteUpgrades | keyof EarthMoneyUpgrades;
+// export type ResourceUpgrades = keyof EarthMeteoriteUpgrades | keyof EarthMoneyUpgrades;
+
+export type ResourceUpgradesNames =
+    | "meteoriteUpgrade1"
+    | "meteoriteUpgrade2"
+    | "meteoriteUpgrade3"
+    | "meteoriteUpgrade4"
+    | "meteoriteUpgrade5"
+    | "meteoriteUpgrade6"
+    | "stoneUpgrade1"
+    | "stoneUpgrade2"
+    | "stoneUpgrade3"
+    | "stoneUpgrade4"
+    | "stoneUpgrade5"
+    | "stoneUpgrade6";
 
 export type EarthMeteoriteUpgrades = {
+    meteoriteUpgrade1: boolean;
+    meteoriteUpgrade2: boolean;
+    meteoriteUpgrade3: boolean;
+    meteoriteUpgrade4: boolean;
+    meteoriteUpgrade5: boolean;
+    meteoriteUpgrade6: boolean;
+};
+
+export type EarthStoneUpgrades = {
     meteoriteUpgrade1: boolean;
     meteoriteUpgrade2: boolean;
     meteoriteUpgrade3: boolean;
@@ -50,13 +73,13 @@ export type ContentUnlocksProps = {
 };
 
 export type SimpleUpgradeProps = {
-    id: ResourceUpgrades;
+    id: ResourceUpgradesNames;
     planet: Planets;
-    resource: keyof ResourcesProps;
+    resource: ResourceNames;
     label: string;
     price: number;
     multiplier: number;
-    moneyRequiredToUnlock: number;
+    unlockRequirements: UnlockRequirement[];
 };
 
 export type ResourceReducerAction = {
@@ -68,25 +91,30 @@ export type ResourceReducerAction = {
 export type SimpleBuildingProps = {
     id: keyof Buildings;
     planet: Planets;
-    requiredMoney?: number;
-    requiredKeyItem?: KeyItemNames;
-    requiredResources?: ResourcePrice;
+    price: Price[];
     label: string;
-    unlockRequirements: BuildingRequirement[];
+    unlockRequirements: UnlockRequirement[];
     description: string;
     obtained: boolean;
 };
 
-export type BuildingRequirement = {
+export type Price = {
+    type: "basicStats" | "keyItem" | "resource";
+    id: ResourceNames | KeyItemNames | keyof BasicStats;
+    amount: number;
+    label: string;
+};
+
+export type UnlockRequirement = {
     type: "basicStats" | "keyItem" | "research" | "building" | "resource";
-    id?: ResourceIds | KeyItemNames | keyof ResearchIds | keyof Buildings | keyof BasicStats;
+    id?: ResourceNames | KeyItemNames | keyof ResearchIds | keyof Buildings | keyof BasicStats;
     amount?: number;
 };
 
-export type ResourcePrice = Partial<Record<ResourceIds, number>>;
+export type ResourcePrice = Partial<Record<ResourceNames, number>>;
 
 export interface SimpleBuildingPriceProps {
-    key: ResourceIds | keyof BasicStats | KeyItemNames;
+    key: ResourceNames | keyof BasicStats | KeyItemNames;
     type: "money" | "resource" | "keyItem";
     label: string;
     value: number;
@@ -95,6 +123,7 @@ export interface SimpleBuildingPriceProps {
 export type Buildings = {
     earthResearchFacility: boolean;
     earthMeteoriteMine: boolean;
+    earthStoneQuarry: boolean;
 };
 export type ResearchProps = {
     id: keyof ResearchIds;
@@ -105,7 +134,7 @@ export type ResearchProps = {
     requiredMoney: number;
     unlockRequirement: KeyItemNames;
     effect: string;
-    resource?: ResourceIds;
+    resource?: ResourceNames;
     maxLevel?: number;
 };
 
@@ -119,19 +148,21 @@ export type ActiveResearch = {
 };
 
 export type Resource = {
-    id: ResourceIds;
+    id: ResourceNames;
     label: string;
     planet: Planets;
     amount: number;
     sellValue: number;
     totalFound: number;
+    tooltip: string;
 };
 
-export type ResourceIds = "meteorite";
+export type ResourceNames = "stone" | "meteorite";
+
 export type KeyItem = {
     id: KeyItemNames;
     label: string;
-    resourceId?: ResourceIds;
+    resourceId?: ResourceNames;
     dropRate: number;
     planet: Planets;
     description: string;

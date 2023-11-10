@@ -4,19 +4,20 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../game-state/gameState";
 import {decrementBasicStat} from "../game-state/slices/basicStatsSlice";
 import {enableResourceUpgrade} from "../game-state/slices/resourceUpgradesSlice";
+import checkIfMeetsRequirements from "../utils/checkIfMeetsRequirements";
 
 function MoneyUpgradesPanel({planet}: {planet: Planets}) {
-    // const {money, totalMoney, contentUnlocks, upgrades, buyUpgrade} = useGameStateContext();
-    const {money, totalMoney} = useSelector((state: RootState) => state.basicStats);
+    const {money} = useSelector((state: RootState) => state.basicStats);
     const {moneyUpgradesPanel} = useSelector((state: RootState) => state.unlockedContent);
     const upgrades = useSelector((state: RootState) => state.resourceUpgrades);
     const dispatch = useDispatch();
 
     const availableUpgrades = RESOURCES_UPGRADES.filter((upgrade) => {
-        if (planet === upgrade.planet && !upgrades[upgrade.id] && totalMoney >= upgrade.moneyRequiredToUnlock) {
+        const hasRequirements = checkIfMeetsRequirements(upgrade.unlockRequirements);
+        if (planet === upgrade.planet && !upgrades[upgrade.id] && hasRequirements) {
             return upgrade;
         }
-    });
+    }).sort((a, b) => a.price - b.price);
 
     const buyUpgrade = (upgrade: SimpleUpgradeProps) => {
         if (money < upgrade.price) return;

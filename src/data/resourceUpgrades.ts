@@ -8,7 +8,7 @@ const RESOURCES_UPGRADES: SimpleUpgradeProps[] = [
         label: "New Meteorite Detector",
         price: 25,
         multiplier: 2,
-        moneyRequiredToUnlock: 25,
+        unlockRequirements: [{type: "basicStats", id: "totalMoney", amount: 10}],
     },
     {
         id: "meteoriteUpgrade2",
@@ -17,7 +17,7 @@ const RESOURCES_UPGRADES: SimpleUpgradeProps[] = [
         label: "Hire Meteorite Apprentice",
         price: 100,
         multiplier: 2,
-        moneyRequiredToUnlock: 25,
+        unlockRequirements: [{type: "basicStats", id: "totalMoney", amount: 50}],
     },
     {
         id: "meteoriteUpgrade3",
@@ -26,7 +26,7 @@ const RESOURCES_UPGRADES: SimpleUpgradeProps[] = [
         label: "Form Meteorite Team",
         price: 300,
         multiplier: 2.5,
-        moneyRequiredToUnlock: 25,
+        unlockRequirements: [{type: "basicStats", id: "totalMoney", amount: 100}],
     },
     {
         id: "meteoriteUpgrade4",
@@ -35,7 +35,7 @@ const RESOURCES_UPGRADES: SimpleUpgradeProps[] = [
         label: "New Meteorite Detector",
         price: 1000,
         multiplier: 2,
-        moneyRequiredToUnlock: 150,
+        unlockRequirements: [{type: "basicStats", id: "totalMoney", amount: 150}],
     },
     {
         id: "meteoriteUpgrade5",
@@ -44,7 +44,7 @@ const RESOURCES_UPGRADES: SimpleUpgradeProps[] = [
         label: "New Meteorite Detector",
         price: 2000,
         multiplier: 3,
-        moneyRequiredToUnlock: 500,
+        unlockRequirements: [{type: "basicStats", id: "totalMoney", amount: 500}],
     },
     {
         id: "meteoriteUpgrade6",
@@ -53,7 +53,34 @@ const RESOURCES_UPGRADES: SimpleUpgradeProps[] = [
         label: "New Meteorite Detector",
         price: 5000,
         multiplier: 2,
-        moneyRequiredToUnlock: 3000,
+        unlockRequirements: [{type: "basicStats", id: "totalMoney", amount: 2500}],
+    },
+    {
+        id: "stoneUpgrade1",
+        planet: "earth",
+        resource: "stone",
+        label: "Shovel",
+        price: 50,
+        multiplier: 1.5,
+        unlockRequirements: [{type: "basicStats", id: "totalMoney", amount: 10}],
+    },
+    {
+        id: "stoneUpgrade2",
+        planet: "earth",
+        resource: "stone",
+        label: "Pickaxe",
+        price: 50,
+        multiplier: 1.5,
+        unlockRequirements: [{type: "basicStats", id: "totalMoney", amount: 25}],
+    },
+    {
+        id: "stoneUpgrade3",
+        planet: "earth",
+        resource: "stone",
+        label: "Drill",
+        price: 500,
+        multiplier: 2,
+        unlockRequirements: [{type: "basicStats", id: "totalMoney", amount: 200}],
     },
 ];
 
