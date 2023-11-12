@@ -1,15 +1,20 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {Resource, ResourceNames} from "../../types/types";
-import RESOURCES from "../../data/resources";
+import {createAction, createSlice} from "@reduxjs/toolkit";
+import {Resource} from "../../types/types";
+import RESOURCES, {ResourceNames} from "../../data/resources";
+
+const saveGame = createAction("saveGame");
+const loadGame = createAction("loadGame");
 
 const initialState: Resource[] = RESOURCES;
 
 export type ResourcesReducerAction = {
-    payload: {
-        id: ResourceNames;
-        amount: number;
-    };
+    payload: ResourceActionPayload;
     type: string;
+};
+
+export type ResourceActionPayload = {
+    id: ResourceNames;
+    amount: number;
 };
 
 export type ArrayResourcesReducerAction = {
@@ -21,17 +26,12 @@ export type ResourcesReducerActionPayload = {
     id: ResourceNames;
     amount: number;
 };
+export const incrementResource = createAction<ResourceActionPayload>("incrementResource");
 
 const resourcesSlice = createSlice({
     name: "resources",
     initialState,
     reducers: {
-        incrementResource: (state, action: ResourcesReducerAction) => {
-            const {payload} = action;
-            const resource = state.find((resource) => resource.id === payload.id) as Resource;
-            resource.amount += payload.amount;
-            resource.totalFound += payload.amount;
-        },
         decrementResource: (state, action: ResourcesReducerAction) => {
             const {payload} = action;
             const resource = state.find((resource) => resource.id === payload.id) as Resource;
@@ -53,7 +53,24 @@ const resourcesSlice = createSlice({
             });
         },
     },
+    extraReducers: (builder) => {
+        builder
+            .addCase(incrementResource, (state, action: ResourcesReducerAction) => {
+                const {payload} = action;
+                const resource = state.find((resource) => resource.id === payload.id) as Resource;
+                resource.amount += payload.amount;
+                resource.totalFound += payload.amount;
+            })
+            .addCase(loadGame, (state) => {
+                const storage = localStorage.getItem("resources");
+                state = storage ? JSON.parse(storage) : initialState;
+                return state;
+            })
+            .addCase(saveGame, (state) => {
+                localStorage.setItem("resources", JSON.stringify(state));
+            });
+    },
 });
 
-export const {incrementResource, decrementResource, incrementResources, decrementResources} = resourcesSlice.actions;
+export const {decrementResource, incrementResources, decrementResources} = resourcesSlice.actions;
 export default resourcesSlice.reducer;

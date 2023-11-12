@@ -1,13 +1,13 @@
 import {useDispatch, useSelector} from "react-redux";
-import {KeyItemNames, Planets, Resource, ResourceNames} from "../types/types";
-import {RootState} from "../game-state/gameState";
-import {incrementResources} from "../game-state/slices/resourcesSlice";
-import RESOURCES_UPGRADES from "../data/resourceUpgrades";
-import calculateResourceIncome from "../utils/calculateResourceIncome";
-import RESOURCES from "../data/resources";
-import {enableContentUnlock} from "../game-state/slices/unlockedContentSlice";
-import {enableKeyItem} from "../game-state/slices/keyItemsSlice";
-import RESOURCE_RARE_DROPS from "../data/rareDrops";
+import {KeyItemNames, Planets, Resource} from "../../types/types";
+import {RootState} from "../../game-state/gameState";
+import {incrementResources} from "../../game-state/slices/resourcesSlice";
+import RESOURCES_UPGRADES from "../../data/resourceUpgrades";
+import calculateResourceIncome from "../../utils/calculateResourceIncome";
+import RESOURCES, {ResourceNames} from "../../data/resources";
+import {enableContentUnlock} from "../../game-state/slices/unlockedContentSlice";
+import {enableKeyItem} from "../../game-state/slices/keyItemsSlice";
+import RESOURCE_RARE_DROPS from "../../data/rareDrops";
 
 function ResourceGenerators({planet}: {planet: Planets}) {
     const dispatch = useDispatch();

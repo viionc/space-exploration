@@ -1,11 +1,12 @@
 import {configureStore} from "@reduxjs/toolkit";
 import resourcesReducer from "./slices/resourcesSlice";
 import resourceUpgradesReducer from "./slices/resourceUpgradesSlice";
-import basicStatsReducer from "./slices/basicStatsSlice";
 import keyItemsReducer from "./slices/keyItemsSlice";
 import unlockedContentReducer from "./slices/unlockedContentSlice";
 import buildingsReducer from "./slices/buildingsSlice";
 import researchesReducer from "./slices/researchesSlice";
+import forgeReducer from "./slices/forgeSlice";
+import basicStatsReducer from "./slices/basicStatsSlice";
 
 export const gameState = configureStore({
     reducer: {
@@ -16,6 +17,7 @@ export const gameState = configureStore({
         unlockedContent: unlockedContentReducer,
         buildings: buildingsReducer,
         researches: researchesReducer,
+        forge: forgeReducer,
     },
 });
 

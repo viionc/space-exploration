@@ -1,5 +1,8 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {Buildings} from "../../types/types";
+import {createAction, createSlice} from "@reduxjs/toolkit";
+import {Buildings} from "../../data/buildings";
+
+const saveGame = createAction("saveGame");
+const loadGame = createAction("loadGame");
 
 const initialState: Partial<Buildings> = {};
 
@@ -18,6 +21,17 @@ const buildingsSlice = createSlice({
             const {payload} = action;
             state[payload.id] = true;
         },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(loadGame, (state) => {
+                const storage = localStorage.getItem("buildings");
+                state = storage ? JSON.parse(storage) : initialState;
+                return state;
+            })
+            .addCase(saveGame, (state) => {
+                localStorage.setItem("buildings", JSON.stringify(state));
+            });
     },
 });
 

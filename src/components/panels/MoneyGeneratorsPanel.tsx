@@ -1,15 +1,17 @@
 import {useState} from "react";
-import {Planets, Resource, ResourceNames} from "../types/types";
+import {Planets, Resource} from "../../types/types";
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../game-state/gameState";
-import {decrementResource} from "../game-state/slices/resourcesSlice";
-import {incrementBasicStat} from "../game-state/slices/basicStatsSlice";
-import {calculateMoneyIncome} from "../utils/calculateMoneyIncome";
+import {RootState} from "../../game-state/gameState";
+import {decrementResource} from "../../game-state/slices/resourcesSlice";
+import {incrementBasicStat} from "../../game-state/slices/basicStatsSlice";
+import {calculateMoneyIncome} from "../../utils/calculateMoneyIncome";
+import {ResourceNames} from "../../data/resources";
+import MultiList from "../MultiList";
 
-const multiValues = ["1", "100", "500", "1000", "All"];
+const multiValues = [1, 10, 25, 50, 100];
 
 function MoneyGenerators({planet}: {planet: Planets}) {
-    const [multi, setMulti] = useState("1");
+    const [multi, setMulti] = useState(1);
 
     const {sellResourcesPanel} = useSelector((state: RootState) => state.unlockedContent);
     const resources = useSelector((state: RootState) => state.resources).filter((res) => res.planet === planet);
@@ -28,29 +30,18 @@ function MoneyGenerators({planet}: {planet: Planets}) {
             className={`flex flex-col gap-4 border rounded-md w-full h-[20rem] p-4 transition-all duration-500 ${
                 sellResourcesPanel ? "opacity-1" : "opacity-0"
             }`}>
-            <ul className="grid grid-cols-5 gap-1">
-                {multiValues.map((value, index) => {
-                    return (
-                        <li
-                            key={index}
-                            className={`h-10 w-full border flex justify-center items-center cursor-pointer hover:bg-zinc-700 ${
-                                multi === value ? "border-zinc-300 bg-zinc-500" : ""
-                            }`}
-                            onClick={() => setMulti(value)}>
-                            x{value}
-                        </li>
-                    );
-                })}
-            </ul>
+            <div className="flex gap-2 w-full items-center">
+                <h2 className="text-2xl">Sell:</h2>
+                <MultiList callback={(value: number) => setMulti(value)} multi={multi} />
+            </div>
             <ul className="grid grid-cols-2 gap-2">
                 {resources
-                    .filter((resource) => resource.totalFound > 0)
+                    .filter((resource) => resource.totalFound > 0 && resource.sellValue > 0)
                     .map((resource) => {
                         return (
-                            <li>
+                            <li key={`${resource.planet}-${resource.id}`}>
                                 <button
                                     className="px-4 py-2 border border-white hover:border-green-500 w-full"
-                                    key={`${resource.planet}-${resource.id}`}
                                     onClick={() => sellResource(resource.id)}>
                                     Sell {resource.label}
                                 </button>

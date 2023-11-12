@@ -4,6 +4,7 @@ import tickHandler from "../tickHandler/tickHandler";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "./gameState";
 import {enableContentUnlock} from "./slices/unlockedContentSlice";
+import {loadGame} from "../game-state/slices/saveGame";
 
 const GameStateContext = createContext<GameStateContextProps | null>(null);
 
@@ -26,20 +27,23 @@ function GameStateContextProvider({children}: {children: ReactNode}) {
         if (basicStats.money >= 25) {
             dispatch(enableContentUnlock({id: "moneyUpgradesPanel"}));
         }
-        if (basicStats.totalMoney >= 100 && keyItems.find((item) => item.id === "suspiciousMeteorite")) {
+        if ((resources.find((_res) => _res.id === "stone")?.totalFound || 0) >= 250) {
             dispatch(enableContentUnlock({id: "buildingsPanel"}));
         }
-        if (buildings.earthResearchFacility) {
-            dispatch(enableContentUnlock({id: "earthResearchUnlocked"}));
+        if (buildings.researchFacility) {
+            dispatch(enableContentUnlock({id: "researchUnlocked"}));
         }
-    }, [basicStats, buildings, keyItems, dispatch]);
+        if (buildings.forge) {
+            dispatch(enableContentUnlock({id: "forge"}));
+        }
+    }, [basicStats, buildings, resources, dispatch]);
 
     useEffect(() => {
         const interval = setInterval(() => {
             tickHandler(dispatch);
         }, 1000);
         return () => clearInterval(interval);
-    }, [dispatch]);
+    }, []);
 
     return <GameStateContext.Provider value={{}}>{children}</GameStateContext.Provider>;
 }

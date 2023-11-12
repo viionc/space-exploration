@@ -1,5 +1,8 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createAction, createSlice} from "@reduxjs/toolkit";
 import {ActiveResearch, ResearchIds} from "../../types/types";
+
+const saveGame = createAction("saveGame");
+const loadGame = createAction("loadGame");
 
 const initialState: ResearchesState = {
     activeResearches: [],
@@ -56,6 +59,17 @@ const researchesSlice = createSlice({
             state.completedResearches[id] ? ((state.completedResearches[id] as number) += 1) : (state.completedResearches[id] = 1);
             state.activeResearches = state.activeResearches.filter((research) => research.duration > 0);
         },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(loadGame, (state) => {
+                const storage = localStorage.getItem("researches");
+                state = storage ? JSON.parse(storage) : initialState;
+                return state;
+            })
+            .addCase(saveGame, (state) => {
+                localStorage.setItem("researches", JSON.stringify(state));
+            });
     },
 });
 export const {startResearch, updateResearchDuration, completeResearch} = researchesSlice.actions;

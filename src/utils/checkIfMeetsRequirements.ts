@@ -1,9 +1,10 @@
 import {BasicStats} from "../game-state/slices/basicStatsSlice";
-import {Buildings, ResearchIds, Resource, UnlockRequirement} from "../types/types";
+import {ResearchIds, Resource, ResourceUpgradesNames, UnlockRequirement} from "../types/types";
 import {gameState} from "../game-state/gameState";
+import {Buildings} from "../data/buildings";
 
 const checkIfMeetsRequirements = (unlockRequirements: UnlockRequirement[]) => {
-    const {basicStats, resources, keyItems, buildings, researches} = gameState.getState();
+    const {basicStats, resources, keyItems, buildings, researches, resourceUpgrades} = gameState.getState();
     let hasRequirements = true;
     for (let i = 0; i < unlockRequirements.length; i++) {
         const _req = unlockRequirements[i];
@@ -32,6 +33,11 @@ const checkIfMeetsRequirements = (unlockRequirements: UnlockRequirement[]) => {
                 break;
             case "research":
                 if (!researches.completedResearches[_req.id as keyof ResearchIds]) {
+                    hasRequirements = false;
+                }
+                break;
+            case "resourcesUpgrades":
+                if (!resourceUpgrades[_req.id as ResourceUpgradesNames]) {
                     hasRequirements = false;
                 }
                 break;

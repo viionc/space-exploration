@@ -1,3 +1,5 @@
+import {Buildings} from "../data/buildings";
+import {ResourceNames} from "../data/resources";
 import {BasicStats} from "../game-state/slices/basicStatsSlice";
 
 export type GameStateContextProps = {};
@@ -34,7 +36,8 @@ export type ResourceUpgradesNames =
     | "stoneUpgrade3"
     | "stoneUpgrade4"
     | "stoneUpgrade5"
-    | "stoneUpgrade6";
+    | "stoneUpgrade6"
+    | "meteoriteDetector";
 
 export type EarthMeteoriteUpgrades = {
     meteoriteUpgrade1: boolean;
@@ -69,7 +72,8 @@ export type ContentUnlocksProps = {
     keyItemsPanel: boolean;
     moneyUpgradesPanel: boolean;
     buildingsPanel: boolean;
-    earthResearchUnlocked: boolean;
+    researchUnlocked: boolean;
+    forge: boolean;
 };
 
 export type SimpleUpgradeProps = {
@@ -80,6 +84,7 @@ export type SimpleUpgradeProps = {
     price: number;
     multiplier: number;
     unlockRequirements: UnlockRequirement[];
+    description: string;
 };
 
 export type ResourceReducerAction = {
@@ -106,8 +111,8 @@ export type Price = {
 };
 
 export type UnlockRequirement = {
-    type: "basicStats" | "keyItem" | "research" | "building" | "resource";
-    id?: ResourceNames | KeyItemNames | keyof ResearchIds | keyof Buildings | keyof BasicStats;
+    type: "basicStats" | "keyItem" | "research" | "building" | "resource" | "resourcesUpgrades";
+    id?: ResourceNames | KeyItemNames | keyof ResearchIds | keyof Buildings | keyof BasicStats | ResourceUpgradesNames;
     amount?: number;
 };
 
@@ -120,11 +125,6 @@ export interface SimpleBuildingPriceProps {
     value: number;
 }
 
-export type Buildings = {
-    earthResearchFacility: boolean;
-    earthMeteoriteMine: boolean;
-    earthStoneQuarry: boolean;
-};
 export type ResearchProps = {
     id: keyof ResearchIds;
     planet: Planets;
@@ -156,8 +156,6 @@ export type Resource = {
     totalFound: number;
     tooltip: string;
 };
-
-export type ResourceNames = "stone" | "meteorite";
 
 export type KeyItem = {
     id: KeyItemNames;

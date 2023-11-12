@@ -1,4 +1,7 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createAction, createSlice} from "@reduxjs/toolkit";
+
+const saveGame = createAction("saveGame");
+const loadGame = createAction("loadGame");
 
 export type BasicStats = {
     money: number;
@@ -30,6 +33,17 @@ const basicStatsSlice = createSlice({
             const {payload} = action;
             state[payload.id] -= payload.amount;
         },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(loadGame, (state) => {
+                const storage = localStorage.getItem("basicStats");
+                state = storage ? JSON.parse(storage) : initialState;
+                return state;
+            })
+            .addCase(saveGame, (state) => {
+                localStorage.setItem("basicStats", JSON.stringify(state));
+            });
     },
 });
 

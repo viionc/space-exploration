@@ -2,8 +2,8 @@ import {Resource} from "../types/types";
 import {gameState} from "../game-state/gameState";
 import RESEARCHES from "../data/researches";
 
-const calculateNewValue = (oldValue: number, multi: string) => {
-    return multi === "All" || parseInt(multi) > oldValue ? oldValue : parseInt(multi);
+const calculateNewValue = (oldValue: number, multi: number) => {
+    return multi > oldValue ? oldValue : multi;
 };
 
 // const calculateNewMoneyAmount = (resource: Resource, amountSold: number) => {
@@ -11,7 +11,7 @@ const calculateNewValue = (oldValue: number, multi: string) => {
 //     return resource.sellValue * amountSold;
 // };
 
-export const calculateMoneyIncome = (resource: Resource, multi: string) => {
+export const calculateMoneyIncome = (resource: Resource, multi: number) => {
     const {researches} = gameState.getState();
     const researchesForThisResource = RESEARCHES.filter((_res) => {
         if (_res.resource === resource.id && researches.completedResearches[_res.id]) {

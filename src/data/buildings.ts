@@ -1,8 +1,15 @@
 import {SimpleBuildingProps} from "../types/types";
 
+export type Buildings = {
+    researchFacility: boolean;
+    meteoriteMine: boolean;
+    stoneQuarry: boolean;
+    forge: boolean;
+};
+
 const BUILDINGS: SimpleBuildingProps[] = [
     {
-        id: "earthResearchFacility",
+        id: "researchFacility",
         label: "Research Facility",
         planet: "earth",
         price: [
@@ -19,7 +26,7 @@ const BUILDINGS: SimpleBuildingProps[] = [
         obtained: false,
     },
     {
-        id: "earthStoneQuarry",
+        id: "stoneQuarry",
         label: "Stone Quarry",
         planet: "earth",
         price: [
@@ -33,11 +40,30 @@ const BUILDINGS: SimpleBuildingProps[] = [
                 amount: 250,
             },
         ],
-        description: "Research Facility will help you discover new technologies and further progress your space exploration adventure.",
+        description: "Stone Quarry will automatically gather stone.",
         obtained: false,
     },
     {
-        id: "earthMeteoriteMine",
+        id: "forge",
+        label: "Forge",
+        planet: "earth",
+        price: [
+            {type: "basicStats", id: "money", label: "Money", amount: 100},
+            {type: "resource", id: "stone", label: "Stone", amount: 500},
+            {type: "resource", id: "iron", label: "Iron", amount: 100},
+        ],
+        unlockRequirements: [
+            {
+                type: "resource",
+                id: "iron",
+                amount: 25,
+            },
+        ],
+        description: "Forge is used to smelt ores.",
+        obtained: false,
+    },
+    {
+        id: "meteoriteMine",
         label: "Meteorite Mine",
         planet: "earth",
         price: [
