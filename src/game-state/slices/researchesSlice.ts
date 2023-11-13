@@ -1,6 +1,7 @@
 import {createAction, createSlice} from "@reduxjs/toolkit";
 import {ActiveResearch} from "../../types/types";
 import {ResearchNames} from "../../data/researches";
+import {toast} from "react-toastify";
 
 const saveGame = createAction("saveGame");
 const loadGame = createAction("loadGame");
@@ -51,12 +52,12 @@ const researchesSlice = createSlice({
             research.duration -= amount;
             if (research.duration <= 0) {
                 researchesSlice.caseReducers.completeResearch(state, {type: "", payload: {id}});
+                toast.success("Research finished.");
             }
         },
         completeResearch: (state, action: CompleteResearchesReducerAction) => {
             const {payload} = action;
             const {id} = payload;
-            console.log("test");
             state.completedResearches[id] ? ((state.completedResearches[id] as number) += 1) : (state.completedResearches[id] = 1);
             state.activeResearches = state.activeResearches.filter((research) => research.duration > 0);
         },

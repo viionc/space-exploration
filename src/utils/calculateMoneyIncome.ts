@@ -2,7 +2,7 @@ import {Resource} from "../types/types";
 import {gameState} from "../game-state/gameState";
 import RESEARCHES from "../data/researches";
 
-const calculateNewValue = (oldValue: number, multi: number) => {
+export const calculateNewValue = (oldValue: number, multi: number) => {
     return multi > oldValue ? oldValue : multi;
 };
 
@@ -22,7 +22,14 @@ export const calculateMoneyIncome = (resource: Resource, multi: number) => {
     const amountSold = calculateNewValue(resource.amount, multi);
 
     let resourceValue = resource.sellValue;
-    researchesForThisResource.forEach((_res) => (resourceValue += researches.completedResearches[_res.id] || 0));
+    researchesForThisResource.forEach((_res) => {
+        const amountCompleted = researches.completedResearches[_res.id] || 0;
+        if (_res.increment) {
+            resourceValue += _res.increment * amountCompleted;
+        } else if (_res.multiplier) {
+            resourceValue *= _res.multiplier * amountCompleted;
+        }
+    });
     const moneyObtained = resourceValue * amountSold;
 
     return {amountSold, moneyObtained};

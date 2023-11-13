@@ -8,7 +8,7 @@ import {calculateMoneyIncome} from "../../utils/calculateMoneyIncome";
 import {ResourceNames} from "../../data/resources";
 import MultiList from "../MultiList";
 
-function MoneyGenerators({planet}: {planet: Planets}) {
+function SellResourcesPanel({planet}: {planet: Planets}) {
     const [multi, setMulti] = useState(1);
 
     const {sellResourcesPanel} = useSelector((state: RootState) => state.unlockedContent);
@@ -39,9 +39,9 @@ function MoneyGenerators({planet}: {planet: Planets}) {
                         return (
                             <li key={`${resource.planet}-${resource.id}`}>
                                 <button
-                                    className="px-4 py-2 border border-white hover:border-green-500 w-full"
+                                    className="px-2 py-2 border border-white hover:border-green-500 w-full"
                                     onClick={() => sellResource(resource.id)}>
-                                    Sell {resource.label}
+                                    Sell {resource.label} {resource.sellValue}$
                                 </button>
                             </li>
                         );
@@ -51,4 +51,4 @@ function MoneyGenerators({planet}: {planet: Planets}) {
     );
 }
 
-export default MoneyGenerators;
+export default SellResourcesPanel;

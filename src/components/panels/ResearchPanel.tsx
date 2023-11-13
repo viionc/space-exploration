@@ -6,12 +6,14 @@ import {startResearch} from "../../game-state/slices/researchesSlice";
 import {decrementBasicStat} from "../../game-state/slices/basicStatsSlice";
 import format from "format-duration";
 import Spinner from "../Spinner";
+import {useState} from "react";
 
 function ResearchPanel({planet}: {planet: Planets}) {
     const {money} = useSelector((state: RootState) => state.basicStats);
     const {researchUnlocked} = useSelector((state: RootState) => state.unlockedContent);
     const researches = useSelector((state: RootState) => state.researches);
     const keyItems = useSelector((state: RootState) => state.keyItems);
+    const [hideCompleted, setHideCompleted] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
@@ -37,7 +39,14 @@ function ResearchPanel({planet}: {planet: Planets}) {
             className={`border rounded-md w-full p-4 transition-all duration-500 col-span-3 row-span-2 ${
                 researchUnlocked ? "opacity-1" : "opacity-0"
             }`}>
-            <h2 className="text-2xl mb-4">Researches: </h2>
+            <div className="flex justify-between items-start">
+                <h2 className="text-2xl mb-4">Researches: </h2>
+                <button
+                    className="border border-white px-2 py-2 hover:border-green-500 cursor-pointer"
+                    onClick={() => setHideCompleted((prev) => !prev)}>
+                    {hideCompleted ? "Show" : "Hide"} Completed
+                </button>
+            </div>
             <ul className="grid grid-cols-2 gap-2 overflow-y-scroll no-scrollbar max-h-[80%]">
                 {availableResearches.map((research) => {
                     const researchesCompleted = (researches.completedResearches[research.id] ?? 0) + 1;
@@ -48,6 +57,7 @@ function ResearchPanel({planet}: {planet: Planets}) {
                     const backgroundWidth = activeResearch ? `${100 - (activeResearch.duration / duration) * 100}%` : "0%";
                     const isActive = activeResearch ? true : false;
                     const isMaxLevel = researches.completedResearches[research.id] === research.maxLevel;
+                    if (isMaxLevel && hideCompleted) return <></>;
                     return (
                         <li className="relative w-full" key={research.id}>
                             <div className={`absolute top-[1px] left-[1px] bottom-[1px] bg-zinc-900 z-0`} style={{width: backgroundWidth}}></div>

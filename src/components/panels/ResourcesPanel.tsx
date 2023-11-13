@@ -29,11 +29,11 @@ function ResourcesPanel({planet}: {planet: Planets}) {
                                     </span>
                                     <span>{resource.id === "stone" ? `${calculateBasedOnBuilding("stoneQuarry", upgrades)}/s` : ""}</span>
                                 </div>
-                                {tooltip?.id === resource.id ? (
+                                {/* {tooltip?.id === resource.id ? (
                                     <span className="absolute top-8 left-0 w-[15rem] bg-zinc-800 border rounded-md text-sm z-10 p-2">
                                         {tooltip.text}
                                     </span>
-                                ) : null}
+                                ) : null} */}
                             </span>
                         </li>
                     );

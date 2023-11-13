@@ -13,6 +13,7 @@ const RESEARCHES: ResearchProps[] = [
         duration: 120,
         durationIncreasePerLevel: 2,
         moneyIncreasePerLevel: 2,
+        increment: 50,
         requiredMoney: 250,
         maxLevel: 9,
         unlockRequirement: "suspiciousMeteorite",
@@ -30,6 +31,7 @@ const RESEARCHES: ResearchProps[] = [
         requiredMoney: 250,
         maxLevel: 1,
         unlockRequirement: "mysteriousRock",
+        resource: "stone",
     },
 ];
 export default RESEARCHES;

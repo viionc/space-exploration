@@ -95,6 +95,8 @@ export type ResearchProps = {
     effect: string;
     resource?: ResourceNames;
     maxLevel?: number;
+    increment?: number;
+    multiplier?: number;
 };
 
 export type ResearchesCompleted = Partial<Record<ResearchNames, boolean>>;

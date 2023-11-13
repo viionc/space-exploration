@@ -2,7 +2,7 @@ import BuildingsPanel from "./components/panels/BuildingsPanel";
 import ForgePanel from "./components/panels/ForgePanel";
 import Header from "./components/Header";
 import KeyItemsPanel from "./components/panels/KeyItemsPanel";
-import MoneyGenerators from "./components/panels/MoneyGeneratorsPanel";
+import SellResourcesPanel from "./components/panels/SellResourcesPanel";
 import MoneyUpgradesPanel from "./components/panels/MoneyUpgradesPanel";
 import ResearchPanel from "./components/panels/ResearchPanel";
 import ResourceGenerators from "./components/panels/ResourceGeneratorsPanel";
@@ -67,7 +67,7 @@ function App() {
             <Header></Header>
             <main className="grid gap-4 max-w-[1600px] w-[1600px] grid-cols-4  grid-rows-4">
                 <ResourceGenerators planet={planet}></ResourceGenerators>
-                <MoneyGenerators planet={planet}></MoneyGenerators>
+                <SellResourcesPanel planet={planet}></SellResourcesPanel>
                 <ForgePanel planet={planet}></ForgePanel>
                 <MoneyUpgradesPanel planet={planet}></MoneyUpgradesPanel>
 
