@@ -10,6 +10,7 @@ import FORGE_DATA from "../data/forge";
 import {saveGame} from "../game-state/slices/saveGame";
 import UPGRADES from "../data/upgrades";
 import {KeyItemNames} from "../data/keyItems";
+import {calculateBasedOnBuilding} from "../utils/calculateResourceIncome";
 
 const SAVE_TIMER = 60; // one minute
 let currentSaveTimer = SAVE_TIMER;
@@ -26,8 +27,7 @@ const tickHandler = (dispatch: Dispatch<AnyAction>) => {
         resourceUpdates.push({id: "meteorite" as ResourceNames, amount: 1});
     }
     if (buildings.stoneQuarry) {
-        const stoneQuarryUpgrades = UPGRADES.filter((_upgrade) => _upgrade.id.startsWith("stoneQuarry") && upgrades[_upgrade.id]);
-        const amount = 1 + stoneQuarryUpgrades.length;
+        const amount = calculateBasedOnBuilding("stoneQuarry", upgrades);
         resourceUpdates.push({id: "stone" as ResourceNames, amount});
         resourceUpdates.push(...checkForRareDrops(dispatch, "stone", researches.completedResearches.stoneQuarryEfficiency ? amount : 1));
     }

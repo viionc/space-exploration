@@ -1,4 +1,6 @@
-import {SimpleUpgradeProps} from "../types/types";
+import {Buildings} from "../data/buildings";
+import UPGRADES from "../data/upgrades";
+import {SimpleUpgradeProps, UpgradesProps} from "../types/types";
 
 const calculateResourceIncome = (upgrades: SimpleUpgradeProps[]): number => {
     let result = 0;
@@ -11,3 +13,9 @@ const calculateResourceIncome = (upgrades: SimpleUpgradeProps[]): number => {
 };
 
 export default calculateResourceIncome;
+
+export const calculateBasedOnBuilding = (building: keyof Buildings, upgrades: Partial<UpgradesProps>): number => {
+    const stoneQuarryUpgrades = UPGRADES.filter((_upgrade) => _upgrade.id.startsWith(building) && upgrades[_upgrade.id]);
+    const amount = 1 + stoneQuarryUpgrades.length;
+    return amount;
+};

@@ -41,12 +41,11 @@ function ResearchPanel({planet}: {planet: Planets}) {
             <ul className="grid grid-cols-2 gap-2 overflow-y-scroll no-scrollbar max-h-[80%]">
                 {availableResearches.map((research) => {
                     const researchesCompleted = (researches.completedResearches[research.id] ?? 0) + 1;
-                    console.log(researchesCompleted);
                     const price = research.requiredMoney * researchesCompleted * research.moneyIncreasePerLevel;
                     const duration = research.duration * (researchesCompleted * research.durationIncreasePerLevel);
                     const canBuy = money > price;
                     const activeResearch = researches.activeResearches.find((_research) => _research.id === research.id);
-                    const backgroundWidth = activeResearch ? `${100 - (activeResearch.duration / research.duration) * 100}%` : "0%";
+                    const backgroundWidth = activeResearch ? `${100 - (activeResearch.duration / duration) * 100}%` : "0%";
                     const isActive = activeResearch ? true : false;
                     const isMaxLevel = researches.completedResearches[research.id] === research.maxLevel;
                     return (
