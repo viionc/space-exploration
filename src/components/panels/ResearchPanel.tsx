@@ -55,7 +55,9 @@ function ResearchPanel({planet}: {planet: Planets}) {
                             <button
                                 disabled={!canBuy || isActive || isMaxLevel}
                                 onClick={() => start(research, price, duration)}
-                                className={`relative px-4 py-2 border flex w-full h-full z-10 ${canBuy ? "border-white" : "border-red-900"}
+                                className={`relative px-4 py-2 border flex w-full h-full z-10 ${
+                                    canBuy ? "border-white" : isMaxLevel ? "border-white" : "border-red-500"
+                                }
                                     ${!isMaxLevel ? "hover:border-green-500 cursor-pointer" : ""}
                                     `}>
                                 <div className="flex flex-col gap-2 items-start w-full">

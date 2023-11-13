@@ -30,7 +30,6 @@ const RESEARCHES: ResearchProps[] = [
         requiredMoney: 250,
         maxLevel: 1,
         unlockRequirement: "mysteriousRock",
-        resource: "stone",
     },
 ];
 export default RESEARCHES;
