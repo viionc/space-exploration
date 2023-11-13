@@ -16,8 +16,8 @@ export type BasicStatsAction = {
     type: string;
 };
 const initialState: BasicStats = {
-    money: 0,
-    totalMoney: 0,
+    money: 100000,
+    totalMoney: 100000,
     totalEarthMeteoriteFound: 0,
 };
 const basicStatsSlice = createSlice({

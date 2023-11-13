@@ -1,5 +1,3 @@
-import React from "react";
-
 const multiValues = [1, 10, 25, 50, 100];
 
 function MultiList({callback, multi}: {multi: number; callback: (value: number) => void}) {

@@ -1,37 +1,38 @@
 import {createAction, createSlice} from "@reduxjs/toolkit";
-import {ResourceUpgradesNames} from "../../types/types";
+import {UpgradesProps} from "../../types/types";
+import {UpgradesNames} from "../../data/upgrades";
 
 const saveGame = createAction("saveGame");
 const loadGame = createAction("loadGame");
 
-const initialState: Partial<Record<ResourceUpgradesNames, boolean>> = {};
+const initialState: Partial<UpgradesProps> = {};
 
-export type ResourceUpgradesReducerAction = {
+export type UpgradesReducerAction = {
     payload: {
-        id: ResourceUpgradesNames;
+        id: UpgradesNames;
     };
     type: string;
 };
 
-const resourceUpgradesSlice = createSlice({
-    name: "resourceUpgrades",
+const upgradesSlice = createSlice({
+    name: "upgrades",
     initialState,
     reducers: {
-        enableResourceUpgrade: (state, action: ResourceUpgradesReducerAction) => {
-            state[action.payload.id] = true;
+        enableUpgrade: (state, action: UpgradesReducerAction) => {
+            state[action.payload.id] = (state[action.payload.id] ?? 0) + 1;
         },
     },
     extraReducers: (builder) => {
         builder
             .addCase(loadGame, (state) => {
-                const storage = localStorage.getItem("resourceUpgrades");
+                const storage = localStorage.getItem("upgrades");
                 state = storage ? JSON.parse(storage) : initialState;
                 return state;
             })
             .addCase(saveGame, (state) => {
-                localStorage.setItem("resourceUpgrades", JSON.stringify(state));
+                localStorage.setItem("upgrades", JSON.stringify(state));
             });
     },
 });
-export const {enableResourceUpgrade} = resourceUpgradesSlice.actions;
-export default resourceUpgradesSlice.reducer;
+export const {enableUpgrade} = upgradesSlice.actions;
+export default upgradesSlice.reducer;

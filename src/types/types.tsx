@@ -1,8 +1,9 @@
 import {Buildings} from "../data/buildings";
+import {KeyItemNames} from "../data/keyItems";
+import {ResearchNames} from "../data/researches";
 import {ResourceNames} from "../data/resources";
+import {UpgradesNames} from "../data/upgrades";
 import {BasicStats} from "../game-state/slices/basicStatsSlice";
-
-export type GameStateContextProps = {};
 
 export type Planets = "earth";
 export type GameResourcesProps = Record<Planets, Partial<ResourcesProps>>;
@@ -18,53 +19,9 @@ export type ResourcesProps = {
     meteorite: number;
 };
 
-export type UpgradesProps = {
-    meteorite: Partial<Record<ResourceUpgradesNames, boolean>>;
-};
+export type UpgradesProps = Record<UpgradesNames, number>;
 
 // export type ResourceUpgrades = keyof EarthMeteoriteUpgrades | keyof EarthMoneyUpgrades;
-
-export type ResourceUpgradesNames =
-    | "meteoriteUpgrade1"
-    | "meteoriteUpgrade2"
-    | "meteoriteUpgrade3"
-    | "meteoriteUpgrade4"
-    | "meteoriteUpgrade5"
-    | "meteoriteUpgrade6"
-    | "stoneUpgrade1"
-    | "stoneUpgrade2"
-    | "stoneUpgrade3"
-    | "stoneUpgrade4"
-    | "stoneUpgrade5"
-    | "stoneUpgrade6"
-    | "meteoriteDetector";
-
-export type EarthMeteoriteUpgrades = {
-    meteoriteUpgrade1: boolean;
-    meteoriteUpgrade2: boolean;
-    meteoriteUpgrade3: boolean;
-    meteoriteUpgrade4: boolean;
-    meteoriteUpgrade5: boolean;
-    meteoriteUpgrade6: boolean;
-};
-
-export type EarthStoneUpgrades = {
-    meteoriteUpgrade1: boolean;
-    meteoriteUpgrade2: boolean;
-    meteoriteUpgrade3: boolean;
-    meteoriteUpgrade4: boolean;
-    meteoriteUpgrade5: boolean;
-    meteoriteUpgrade6: boolean;
-};
-
-export type EarthMoneyUpgrades = {
-    moneyUpgrade1: boolean;
-    moneyUpgrade2: boolean;
-    moneyUpgrade3: boolean;
-    moneyUpgrade4: boolean;
-    moneyUpgrade5: boolean;
-    moneyUpgrade6: boolean;
-};
 
 export type ContentUnlocksProps = {
     sellResourcesPanel: boolean;
@@ -77,7 +34,7 @@ export type ContentUnlocksProps = {
 };
 
 export type SimpleUpgradeProps = {
-    id: ResourceUpgradesNames;
+    id: UpgradesNames;
     planet: Planets;
     resource: ResourceNames;
     label: string;
@@ -112,7 +69,7 @@ export type Price = {
 
 export type UnlockRequirement = {
     type: "basicStats" | "keyItem" | "research" | "building" | "resource" | "resourcesUpgrades";
-    id?: ResourceNames | KeyItemNames | keyof ResearchIds | keyof Buildings | keyof BasicStats | ResourceUpgradesNames;
+    id?: ResourceNames | KeyItemNames | ResearchNames | keyof Buildings | keyof BasicStats | UpgradesNames;
     amount?: number;
 };
 
@@ -126,7 +83,7 @@ export interface SimpleBuildingPriceProps {
 }
 
 export type ResearchProps = {
-    id: keyof ResearchIds;
+    id: ResearchNames;
     planet: Planets;
     label: string;
     description: string;
@@ -138,12 +95,10 @@ export type ResearchProps = {
     maxLevel?: number;
 };
 
-export type ResearchIds = {
-    refineMeteorite: boolean;
-};
+export type ResearchesCompleted = Partial<Record<ResearchNames, boolean>>;
 
 export type ActiveResearch = {
-    id: keyof ResearchIds;
+    id: ResearchNames;
     duration: number;
 };
 
@@ -166,4 +121,3 @@ export type KeyItem = {
     description: string;
     obtained: boolean;
 };
-export type KeyItemNames = "suspiciousMeteorite";

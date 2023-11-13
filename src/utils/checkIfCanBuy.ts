@@ -1,6 +1,7 @@
 import {Price, Resource} from "../types/types";
 import {gameState} from "../game-state/gameState";
 import {BasicStats} from "../game-state/slices/basicStatsSlice";
+import {KeyItemNames} from "../data/keyItems";
 
 const checkIfCanBuy = (price: Price[]) => {
     const {resources, basicStats, keyItems} = gameState.getState();
@@ -20,7 +21,7 @@ const checkIfCanBuy = (price: Price[]) => {
                 }
                 break;
             case "keyItem":
-                if (!keyItems.find((_keyItem) => _keyItem.id === _req.id)?.obtained) {
+                if (!keyItems[_req.id as KeyItemNames]) {
                     hasRequirements = false;
                 }
                 break;

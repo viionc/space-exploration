@@ -9,15 +9,21 @@ function ResearchPanel({planet}: {planet: Planets}) {
     const {money} = useSelector((state: RootState) => state.basicStats);
     const {researchUnlocked} = useSelector((state: RootState) => state.unlockedContent);
     const researches = useSelector((state: RootState) => state.researches);
+    const keyItems = useSelector((state: RootState) => state.keyItems);
 
     const dispatch = useDispatch();
-    const keyItems = useSelector((state: RootState) => state.keyItems).filter((keyItem) => keyItem.planet === planet);
 
     const availableResearches = RESEARCHES.filter((research) => {
-        const hasKeyItem = keyItems.find((keyItem) => keyItem.id === research.unlockRequirement && keyItem.obtained);
+        const hasKeyItem = keyItems[research.unlockRequirement];
         if (research.planet === planet && hasKeyItem) {
             return research;
         }
+    }).sort((a, b) => {
+        const a_isMaxLevel = researches.completedResearches[a.id] === a.maxLevel;
+        const b_isMaxLevel = researches.completedResearches[b.id] === b.maxLevel;
+        if (a_isMaxLevel) return 1;
+        if (b_isMaxLevel) return -1;
+        return 0;
     });
     const start = (research: ResearchProps) => {
         if (money < research.requiredMoney) return;
@@ -30,7 +36,7 @@ function ResearchPanel({planet}: {planet: Planets}) {
                 researchUnlocked ? "opacity-1" : "opacity-0"
             }`}>
             <h2 className="text-2xl mb-4">Researches: </h2>
-            <ul className="grid grid-cols-2 overflow-y-scroll no-scrollbar max-h-[80%]">
+            <ul className="grid grid-cols-2 gap-2 overflow-y-scroll no-scrollbar max-h-[80%]">
                 {availableResearches.map((research) => {
                     const canBuy = money > research.requiredMoney;
                     const activeResearch = researches.activeResearches.find((_research) => _research.id === research.id);
@@ -43,20 +49,22 @@ function ResearchPanel({planet}: {planet: Planets}) {
                             <button
                                 disabled={!canBuy || isActive || isMaxLevel}
                                 onClick={() => start(research)}
-                                className={`relative px-4 py-2 border flex w-full h-full z-10 ${
-                                    canBuy ? "border-white hover:border-green-500 cursor-pointer" : "border-red-900"
-                                }`}>
-                                <div className="flex flex-col gap-2 items-start">
+                                className={`relative px-4 py-2 border flex w-full h-full z-10 ${canBuy ? "border-white" : "border-red-900"}
+                                    ${!isMaxLevel ? "hover:border-green-500 cursor-pointer" : ""}
+                                    `}>
+                                <div className="flex flex-col gap-2 items-start w-full">
                                     <div className={`${isMaxLevel ? "text-green-500" : "text-white"}`}>
                                         {research.label} Lvl {researches.completedResearches[research.id] || 0}/{research.maxLevel}
                                     </div>
-                                    <div className="text-left text-sm">{research.effect}</div>
                                     <div className="text-left text-sm">{research.description}</div>
+                                    <div className="text-left text-sm">{research.effect}</div>
                                 </div>
-                                <div className="flex flex-col justify-center items-start h-full w-[22rem]">
-                                    <div className={`${canBuy ? "text-white" : "text-red-500"}`}>Cost: {research.requiredMoney}$</div>
-                                    <div>Duration: {research.duration}</div>
-                                </div>
+                                {!isMaxLevel ? (
+                                    <div className="flex flex-col items-end h-full ">
+                                        <div className={`${canBuy ? "text-white" : "text-red-500"}`}>{research.requiredMoney}$</div>
+                                        <div>{research.duration}s</div>
+                                    </div>
+                                ) : null}
                             </button>
                         </li>
                     );

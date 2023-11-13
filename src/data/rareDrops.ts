@@ -1,4 +1,4 @@
-import {KeyItemNames} from "../types/types";
+import {KeyItemNames} from "./keyItems";
 import {ResourceNames} from "./resources";
 
 export type RareDrop = {
@@ -19,8 +19,19 @@ const RESOURCE_RARE_DROPS: Record<ResourceNames, RareDrop[]> = {
             dropRate: 25,
             keyItem: false,
         },
+        {
+            id: "mysteriousRock",
+            dropRate: 50,
+            keyItem: true,
+        },
     ],
-    "meteorite": [],
+    "meteorite": [
+        {
+            id: "suspiciousMeteorite",
+            dropRate: 50,
+            keyItem: true,
+        },
+    ],
     "coal": [],
     "iron": [],
     "ironBar": [],

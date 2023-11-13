@@ -7,8 +7,8 @@ import {ResourceNames} from "../../data/resources";
 import {addItemToForge} from "../../game-state/slices/forgeSlice";
 import {decrementResources} from "../../game-state/slices/resourcesSlice";
 import MultiList from "../MultiList";
-
-const multiValues = [1, 10, 25, 50, 100];
+import Spinner from "../Spinner";
+import {toast} from "react-toastify";
 
 function ForgePanel({planet}: {planet: Planets}) {
     const [multi, setMulti] = useState(1);
@@ -21,7 +21,8 @@ function ForgePanel({planet}: {planet: Planets}) {
 
     const startSmelitng = (item: ForgeItem) => {
         const fuelOwned = resources.find((_item) => _item.id === item.fuel.id);
-        if (fuelOwned && fuelOwned.amount >= item.fuel.amount) {
+        const itemOwned = resources.find((_item) => _item.id === item.id);
+        if (fuelOwned && itemOwned && fuelOwned.amount >= item.fuel.amount * multi && itemOwned.amount >= multi) {
             dispatch(addItemToForge({...item, amount: multi, currentDuration: item.duration}));
             dispatch(
                 decrementResources([
@@ -29,6 +30,8 @@ function ForgePanel({planet}: {planet: Planets}) {
                     {id: item.id, amount: multi},
                 ])
             );
+        } else {
+            toast.error("Not enough fuel or resource.");
         }
     };
 
@@ -53,7 +56,12 @@ function ForgePanel({planet}: {planet: Planets}) {
                                 className="relative z-10 px-4 py-2 border border-white hover:border-green-500 w-full flex justify-between"
                                 key={`${item.id}`}>
                                 <span>{item.label}</span>
-                                {forgeItem && <span>{forgeItem.amount}</span>}
+                                {forgeItem && (
+                                    <span className="flex gap-1 items-center">
+                                        <Spinner variant="sm" />
+                                        {forgeItem.amount}
+                                    </span>
+                                )}
                             </button>
                         </li>
                     );

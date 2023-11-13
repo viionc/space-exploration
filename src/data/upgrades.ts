@@ -1,6 +1,8 @@
 import {SimpleUpgradeProps} from "../types/types";
 
-const RESOURCES_UPGRADES: SimpleUpgradeProps[] = [
+export type UpgradesNames = `meteoriteUpgrade${number}` | `stoneUpgrade${number}` | "meteoriteDetector" | `stoneQuarry${number}`;
+
+const UPGRADES: SimpleUpgradeProps[] = [
     {
         id: "meteoriteUpgrade1",
         planet: "earth",
@@ -41,45 +43,6 @@ const RESOURCES_UPGRADES: SimpleUpgradeProps[] = [
         description: "Multiplies meteorite click income by 1.5.",
     },
     {
-        id: "meteoriteUpgrade4",
-        planet: "earth",
-        resource: "meteorite",
-        label: "New Meteorite Detector",
-        price: 250000,
-        multiplier: 1.5,
-        unlockRequirements: [
-            {type: "resourcesUpgrades", id: "meteoriteDetector"},
-            {type: "basicStats", id: "totalMoney", amount: 100000},
-        ],
-        description: "Multiplies meteorite click income by 1.5.",
-    },
-    {
-        id: "meteoriteUpgrade5",
-        planet: "earth",
-        resource: "meteorite",
-        label: "New Meteorite Detector",
-        price: 500000,
-        multiplier: 1.5,
-        unlockRequirements: [
-            {type: "resourcesUpgrades", id: "meteoriteDetector"},
-            {type: "basicStats", id: "totalMoney", amount: 100000},
-        ],
-        description: "Multiplies meteorite click income by 1.5.",
-    },
-    {
-        id: "meteoriteUpgrade6",
-        planet: "earth",
-        resource: "meteorite",
-        label: "New Meteorite Detector",
-        price: 1000000,
-        multiplier: 1.5,
-        unlockRequirements: [
-            {type: "resourcesUpgrades", id: "meteoriteDetector"},
-            {type: "basicStats", id: "totalMoney", amount: 100000},
-        ],
-        description: "Multiplies meteorite click income by 1.5.",
-    },
-    {
         id: "stoneUpgrade1",
         planet: "earth",
         resource: "stone",
@@ -116,9 +79,39 @@ const RESOURCES_UPGRADES: SimpleUpgradeProps[] = [
         label: "Meteorite Detector",
         price: 5000,
         multiplier: 1,
-        unlockRequirements: [{type: "resource", id: "meteorite", amount: 50}],
+        unlockRequirements: [{type: "resource", id: "ironBar", amount: 25}],
         description: "Meteorite Detector allows you to search for meteorite.",
+    },
+    {
+        id: "stoneQuarry1",
+        planet: "earth",
+        resource: "stone",
+        label: "Quarry Efficiency I",
+        price: 5000,
+        multiplier: 1,
+        unlockRequirements: [{type: "building", id: "stoneQuarry"}],
+        description: "Increases stone quarry output by 1.",
+    },
+    {
+        id: "stoneQuarry2",
+        planet: "earth",
+        resource: "stone",
+        label: "Quarry Efficiency II",
+        price: 50000,
+        multiplier: 1,
+        unlockRequirements: [{type: "building", id: "stoneQuarry"}],
+        description: "Increases stone quarry output by 1.",
+    },
+    {
+        id: "stoneQuarry3",
+        planet: "earth",
+        resource: "stone",
+        label: "Quarry Efficiency III",
+        price: 500000,
+        multiplier: 1,
+        unlockRequirements: [{type: "building", id: "stoneQuarry"}],
+        description: "Increases stone quarry output by 1.",
     },
 ];
 
-export default RESOURCES_UPGRADES;
+export default UPGRADES;

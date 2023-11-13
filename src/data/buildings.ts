@@ -15,11 +15,12 @@ const BUILDINGS: SimpleBuildingProps[] = [
         price: [
             {type: "basicStats", id: "money", label: "Money", amount: 100},
             {type: "resource", id: "stone", label: "Stone", amount: 500},
+            {type: "resource", id: "ironBar", label: "Iron Bar", amount: 50},
         ],
         unlockRequirements: [
             {
                 type: "keyItem",
-                id: "suspiciousMeteorite",
+                id: "mysteriousRock",
             },
         ],
         description: "Research Facility will help you discover new technologies and further progress your space exploration adventure.",

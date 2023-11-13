@@ -1,14 +1,14 @@
 import {createAction, createSlice} from "@reduxjs/toolkit";
-import {KeyItem, KeyItemsProps} from "../../types/types";
-import KEY_ITEMS from "../../data/keyItems";
+import {KeyItemNames} from "../../data/keyItems";
 
 const saveGame = createAction("saveGame");
 const loadGame = createAction("loadGame");
 
-const initialState: KeyItem[] = KEY_ITEMS;
+const initialState: Partial<Record<KeyItemNames, boolean>> = {};
+
 export type KeyItemsReducerAction = {
     payload: {
-        id: keyof KeyItemsProps;
+        id: KeyItemNames;
     };
     type: string;
 };
@@ -18,8 +18,8 @@ const keyItemsSlice = createSlice({
     reducers: {
         enableKeyItem: (state, action: KeyItemsReducerAction) => {
             const {payload} = action;
-            const keyItem = state.find((_item) => _item.id === payload.id) as KeyItem;
-            keyItem.obtained = true;
+            console.log(payload.id);
+            state[payload.id] = true;
         },
     },
     extraReducers: (builder) => {

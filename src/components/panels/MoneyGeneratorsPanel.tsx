@@ -8,8 +8,6 @@ import {calculateMoneyIncome} from "../../utils/calculateMoneyIncome";
 import {ResourceNames} from "../../data/resources";
 import MultiList from "../MultiList";
 
-const multiValues = [1, 10, 25, 50, 100];
-
 function MoneyGenerators({planet}: {planet: Planets}) {
     const [multi, setMulti] = useState(1);
 

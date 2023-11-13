@@ -1,5 +1,6 @@
 import {createAction, createSlice} from "@reduxjs/toolkit";
-import {ActiveResearch, ResearchIds} from "../../types/types";
+import {ActiveResearch} from "../../types/types";
+import {ResearchNames} from "../../data/researches";
 
 const saveGame = createAction("saveGame");
 const loadGame = createAction("loadGame");
@@ -11,12 +12,12 @@ const initialState: ResearchesState = {
 
 export type ResearchesState = {
     activeResearches: ActiveResearch[];
-    completedResearches: Partial<Record<keyof ResearchIds, number>>;
+    completedResearches: Partial<Record<ResearchNames, number>>;
 };
 
 export type CompleteResearchesReducerAction = {
     payload: {
-        id: keyof ResearchIds;
+        id: ResearchNames;
     };
     type: string;
 };
@@ -28,7 +29,7 @@ export type StartResearchReducerAction = {
 
 export type UpdateResearchDurationReducerAction = {
     payload: {
-        id: keyof ResearchIds;
+        id: ResearchNames;
         amount: number;
     };
     type: string;
