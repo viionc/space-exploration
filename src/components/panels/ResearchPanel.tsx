@@ -4,6 +4,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../game-state/gameState";
 import {startResearch} from "../../game-state/slices/researchesSlice";
 import {decrementBasicStat} from "../../game-state/slices/basicStatsSlice";
+import format from "format-duration";
+import Spinner from "../Spinner";
 
 function ResearchPanel({planet}: {planet: Planets}) {
     const {money} = useSelector((state: RootState) => state.basicStats);
@@ -25,10 +27,10 @@ function ResearchPanel({planet}: {planet: Planets}) {
         if (b_isMaxLevel) return -1;
         return 0;
     });
-    const start = (research: ResearchProps) => {
-        if (money < research.requiredMoney) return;
-        dispatch(startResearch({id: research.id, duration: research.duration}));
-        dispatch(decrementBasicStat({id: "money", amount: research.requiredMoney}));
+    const start = (research: ResearchProps, price: number, duration: number) => {
+        if (money < price) return;
+        dispatch(startResearch({id: research.id, duration: duration}));
+        dispatch(decrementBasicStat({id: "money", amount: price}));
     };
     return (
         <article
@@ -38,7 +40,11 @@ function ResearchPanel({planet}: {planet: Planets}) {
             <h2 className="text-2xl mb-4">Researches: </h2>
             <ul className="grid grid-cols-2 gap-2 overflow-y-scroll no-scrollbar max-h-[80%]">
                 {availableResearches.map((research) => {
-                    const canBuy = money > research.requiredMoney;
+                    const researchesCompleted = (researches.completedResearches[research.id] ?? 0) + 1;
+                    console.log(researchesCompleted);
+                    const price = research.requiredMoney * researchesCompleted * research.moneyIncreasePerLevel;
+                    const duration = research.duration * (researchesCompleted * research.durationIncreasePerLevel);
+                    const canBuy = money > price;
                     const activeResearch = researches.activeResearches.find((_research) => _research.id === research.id);
                     const backgroundWidth = activeResearch ? `${100 - (activeResearch.duration / research.duration) * 100}%` : "0%";
                     const isActive = activeResearch ? true : false;
@@ -48,23 +54,31 @@ function ResearchPanel({planet}: {planet: Planets}) {
                             <div className={`absolute top-[1px] left-[1px] bottom-[1px] bg-zinc-900 z-0`} style={{width: backgroundWidth}}></div>
                             <button
                                 disabled={!canBuy || isActive || isMaxLevel}
-                                onClick={() => start(research)}
+                                onClick={() => start(research, price, duration)}
                                 className={`relative px-4 py-2 border flex w-full h-full z-10 ${canBuy ? "border-white" : "border-red-900"}
                                     ${!isMaxLevel ? "hover:border-green-500 cursor-pointer" : ""}
                                     `}>
                                 <div className="flex flex-col gap-2 items-start w-full">
-                                    <div className={`${isMaxLevel ? "text-green-500" : "text-white"}`}>
-                                        {research.label} Lvl {researches.completedResearches[research.id] || 0}/{research.maxLevel}
+                                    <div className="w-full flex justify-between">
+                                        <div className={`${isMaxLevel ? "text-green-500" : "text-white"}`}>
+                                            {research.label} Lvl {researches.completedResearches[research.id] || 0}/{research.maxLevel}
+                                        </div>
+                                        {!isMaxLevel && !activeResearch ? (
+                                            <div className="flex gap-4 items-center">
+                                                <div className={`${canBuy ? "text-white" : "text-red-500"}`}>{price}$</div>
+                                                <div>{format(duration * 1000)}</div>
+                                            </div>
+                                        ) : null}
+                                        {activeResearch ? (
+                                            <div className="flex gap-1 items-center ">
+                                                <Spinner variant="sm"></Spinner>
+                                                <span>{format(activeResearch.duration * 1000)}</span>
+                                            </div>
+                                        ) : null}
                                     </div>
                                     <div className="text-left text-sm">{research.description}</div>
                                     <div className="text-left text-sm">{research.effect}</div>
                                 </div>
-                                {!isMaxLevel ? (
-                                    <div className="flex flex-col items-end h-full ">
-                                        <div className={`${canBuy ? "text-white" : "text-red-500"}`}>{research.requiredMoney}$</div>
-                                        <div>{research.duration}s</div>
-                                    </div>
-                                ) : null}
                             </button>
                         </li>
                     );

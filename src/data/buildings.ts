@@ -13,7 +13,7 @@ const BUILDINGS: SimpleBuildingProps[] = [
         label: "Research Facility",
         planet: "earth",
         price: [
-            {type: "basicStats", id: "money", label: "Money", amount: 100},
+            {type: "basicStats", id: "money", label: "Money", amount: 2500},
             {type: "resource", id: "stone", label: "Stone", amount: 500},
             {type: "resource", id: "ironBar", label: "Iron Bar", amount: 50},
         ],
@@ -22,6 +22,7 @@ const BUILDINGS: SimpleBuildingProps[] = [
                 type: "keyItem",
                 id: "mysteriousRock",
             },
+            {type: "resource", id: "ironBar", amount: 10},
         ],
         description: "Research Facility will help you discover new technologies and further progress your space exploration adventure.",
         obtained: false,
@@ -49,15 +50,15 @@ const BUILDINGS: SimpleBuildingProps[] = [
         label: "Forge",
         planet: "earth",
         price: [
-            {type: "basicStats", id: "money", label: "Money", amount: 100},
-            {type: "resource", id: "stone", label: "Stone", amount: 500},
-            {type: "resource", id: "iron", label: "Iron", amount: 100},
+            {type: "basicStats", id: "money", label: "Money", amount: 1000},
+            {type: "resource", id: "stone", label: "Stone", amount: 250},
+            {type: "resource", id: "iron", label: "Iron", amount: 10},
         ],
         unlockRequirements: [
             {
                 type: "resource",
                 id: "iron",
-                amount: 25,
+                amount: 10,
             },
         ],
         description: "Forge is used to smelt ores.",

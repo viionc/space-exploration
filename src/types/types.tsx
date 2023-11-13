@@ -88,6 +88,8 @@ export type ResearchProps = {
     label: string;
     description: string;
     duration: number;
+    durationIncreasePerLevel: number;
+    moneyIncreasePerLevel: number;
     requiredMoney: number;
     unlockRequirement: KeyItemNames;
     effect: string;

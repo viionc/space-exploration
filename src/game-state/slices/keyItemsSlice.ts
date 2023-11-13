@@ -18,7 +18,6 @@ const keyItemsSlice = createSlice({
     reducers: {
         enableKeyItem: (state, action: KeyItemsReducerAction) => {
             const {payload} = action;
-            console.log(payload.id);
             state[payload.id] = true;
         },
     },

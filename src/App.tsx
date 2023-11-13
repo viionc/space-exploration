@@ -17,6 +17,7 @@ import tickHandler from "./tickHandler/tickHandler";
 import {RootState} from "./game-state/gameState";
 import {enableContentUnlock} from "./game-state/slices/unlockedContentSlice";
 import {setInterval, clearInterval} from "worker-timers";
+import {GAME_VERSION} from "./utils/constants";
 
 function App() {
     const planet = "earth";
@@ -62,17 +63,19 @@ function App() {
     return loaded ? (
         <>
             <ToastContainer theme="dark" closeOnClick pauseOnHover />
+            <div className="absolute top-1 left-1 text-sm">{GAME_VERSION}</div>
             <Header></Header>
             <main className="grid gap-4 max-w-[1600px] w-[1600px] grid-cols-4  grid-rows-4">
                 <ResourceGenerators planet={planet}></ResourceGenerators>
                 <MoneyGenerators planet={planet}></MoneyGenerators>
                 <ForgePanel planet={planet}></ForgePanel>
                 <MoneyUpgradesPanel planet={planet}></MoneyUpgradesPanel>
+
                 <ResourcesPanel planet={planet}></ResourcesPanel>
                 <BuildingsPanel planet={planet}></BuildingsPanel>
 
-                <ResearchPanel planet={planet}></ResearchPanel>
                 <KeyItemsPanel planet={planet}></KeyItemsPanel>
+                <ResearchPanel planet={planet}></ResearchPanel>
             </main>
         </>
     ) : (
