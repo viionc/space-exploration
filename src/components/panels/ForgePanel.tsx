@@ -1,5 +1,4 @@
 import {useState} from "react";
-import {Planets} from "../../types/types";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../game-state/gameState";
 import FORGE_DATA, {ForgeItem} from "../../data/forge";
@@ -10,12 +9,12 @@ import MultiList from "../MultiList";
 import Spinner from "../Spinner";
 import {toast} from "react-toastify";
 
-function ForgePanel({planet}: {planet: Planets}) {
+function ForgePanel() {
     const [multi, setMulti] = useState(1);
 
     const {forge: forgeUnlock} = useSelector((state: RootState) => state.unlockedContent);
     const forge = useSelector((state: RootState) => state.forge);
-    const resources = useSelector((state: RootState) => state.resources).filter((res) => res.planet === planet);
+    const resources = useSelector((state: RootState) => state.resources);
     const dispatch = useDispatch();
     const forgeItems = Object.entries(FORGE_DATA) as [ResourceNames, ForgeItem][];
 

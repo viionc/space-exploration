@@ -61,7 +61,9 @@ const forgeSlice = createSlice({
             .addCase(loadGame, (state) => {
                 const storage = localStorage.getItem("forge");
 
-                state = storage ? {...JSON.parse(storage)} : initialState;
+                if (storage) {
+                    state = Object.assign(state, JSON.parse(storage));
+                }
                 return state;
             })
             .addCase(saveGame, (state) => {

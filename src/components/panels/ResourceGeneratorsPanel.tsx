@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {Planets, Resource} from "../../types/types";
+import {Resource} from "../../types/types";
 import {RootState} from "../../game-state/gameState";
 import {incrementResources} from "../../game-state/slices/resourcesSlice";
 import UPGRADES from "../../data/upgrades";
@@ -10,16 +10,14 @@ import {enableKeyItem} from "../../game-state/slices/keyItemsSlice";
 import RESOURCE_RARE_DROPS from "../../data/rareDrops";
 import {KeyItemNames} from "../../data/keyItems";
 
-function ResourceGenerators({planet}: {planet: Planets}) {
+function ResourceGenerators() {
     const dispatch = useDispatch();
     const resourceUpgrades = useSelector((state: RootState) => state.upgrades);
-    const resources = useSelector((state: RootState) => state.resources).filter((keyItem) => keyItem.planet === planet);
+    const resources = useSelector((state: RootState) => state.resources);
     const upgrades = useSelector((state: RootState) => state.upgrades);
 
     const gatherResource = (resource: Resource) => {
-        const upgrades = UPGRADES.filter(
-            (_upgrade) => _upgrade.planet === planet && resourceUpgrades[_upgrade.id] && _upgrade.resource === resource.id
-        );
+        const upgrades = UPGRADES.filter((_upgrade) => resourceUpgrades[_upgrade.id] && _upgrade.resource === resource.id);
         const resourceUpdates = [];
         resourceUpdates.push({id: resource.id, amount: calculateResourceIncome(upgrades)});
         dispatch(enableContentUnlock({id: "resourcesPanel"}));

@@ -7,6 +7,7 @@ export type BasicStats = {
     money: number;
     totalMoney: number;
     totalEarthMeteoriteFound: number;
+    playerAttackPower: number;
 };
 export type BasicStatsAction = {
     payload: {
@@ -19,6 +20,7 @@ const initialState: BasicStats = {
     money: 0,
     totalMoney: 0,
     totalEarthMeteoriteFound: 0,
+    playerAttackPower: 1,
 };
 const basicStatsSlice = createSlice({
     name: "basicStats",
@@ -38,7 +40,9 @@ const basicStatsSlice = createSlice({
         builder
             .addCase(loadGame, (state) => {
                 const storage = localStorage.getItem("basicStats");
-                state = storage ? JSON.parse(storage) : initialState;
+                if (storage) {
+                    state = Object.assign(state, JSON.parse(storage));
+                }
                 return state;
             })
             .addCase(saveGame, (state) => {

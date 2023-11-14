@@ -10,12 +10,16 @@ import FORGE_DATA from "../data/forge";
 import {saveGame} from "../game-state/slices/saveGame";
 import {KeyItemNames} from "../data/keyItems";
 import {calculateBasedOnBuilding} from "../utils/calculateResourceIncome";
+import {reduceEnemyHp} from "../game-state/slices/battleSlice";
+import {BasicStats, incrementBasicStat} from "../game-state/slices/basicStatsSlice";
 
 const SAVE_TIMER = 60; // one minute
+export const BATTLE_ATTACK_SPEED = 5;
 let currentSaveTimer = SAVE_TIMER;
+export let currentBattleTimer = BATTLE_ATTACK_SPEED;
 
 const tickHandler = (dispatch: Dispatch<AnyAction>) => {
-    const {researches, buildings, forge, upgrades} = gameState.getState();
+    const {researches, buildings, forge, upgrades, basicStats, battle} = gameState.getState();
     const resourceUpdates: ResourcesReducerActionPayload[] = [];
     const rareDrops: ResourcesReducerActionPayload[] = [];
     researches.activeResearches.forEach((research) => {
@@ -37,6 +41,29 @@ const tickHandler = (dispatch: Dispatch<AnyAction>) => {
             dispatch(updateForgeItem({id: forgeItem.id, reducedDuration: 1}));
         }
     });
+
+    if (battle.isBattleActive) {
+        currentBattleTimer -= 1;
+        if (currentBattleTimer === 0) {
+            if (battle.battleStatus.currentEnemyHp === 1) {
+                battle.battleStatus.enemy.loot.forEach((loot) => {
+                    if (loot.type === "basicStats") {
+                        const lootRoll = Math.ceil(Math.random() * (loot.baseMaxAmount - loot.baseMinAmount) + loot.baseMinAmount);
+                        dispatch(incrementBasicStat({id: loot.id as keyof BasicStats, amount: lootRoll}));
+                    } else if (loot.type === "keyItem") {
+                        dispatch(enableKeyItem({id: loot.id as KeyItemNames}));
+                    } else if (loot.type === "resource") {
+                        const lootRoll = Math.ceil(Math.random() * (loot.baseMaxAmount - loot.baseMinAmount) + loot.baseMinAmount);
+                        console.log(lootRoll);
+                        resourceUpdates.push({id: loot.id as ResourceNames, amount: lootRoll});
+                    }
+                });
+            }
+
+            dispatch(reduceEnemyHp(basicStats.playerAttackPower));
+            currentBattleTimer = BATTLE_ATTACK_SPEED;
+        }
+    }
 
     resourceUpdates.push(...rareDrops);
     dispatch(incrementResources(resourceUpdates));

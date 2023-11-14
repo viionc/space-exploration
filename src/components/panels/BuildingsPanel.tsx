@@ -1,4 +1,4 @@
-import {Planets, SimpleBuildingProps} from "../../types/types";
+import {SimpleBuildingProps} from "../../types/types";
 import BUILDINGS from "../../data/buildings";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../game-state/gameState";
@@ -11,7 +11,7 @@ import {ResourceNames} from "../../data/resources";
 import {abbreviateNumber} from "js-abbreviation-number";
 import {ABBR_SYMBOLS} from "../../utils/constants";
 
-function BuildingsPanel({planet}: {planet: Planets}) {
+function BuildingsPanel() {
     const buildings = useSelector((state: RootState) => state.buildings);
     const {buildingsPanel} = useSelector((state: RootState) => state.unlockedContent);
 
@@ -19,7 +19,7 @@ function BuildingsPanel({planet}: {planet: Planets}) {
 
     const availableBuildings = BUILDINGS.filter((building) => {
         const hasRequirements = checkIfMeetsRequirements(building.unlockRequirements);
-        if (building.planet === planet && hasRequirements && !buildings[building.id]) {
+        if (hasRequirements && !buildings[building.id]) {
             return building;
         }
     });

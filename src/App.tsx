@@ -18,9 +18,9 @@ import {RootState} from "./game-state/gameState";
 import {enableContentUnlock} from "./game-state/slices/unlockedContentSlice";
 import {setInterval, clearInterval} from "worker-timers";
 import {GAME_VERSION} from "./utils/constants";
+import BattlePanel from "./components/panels/BattlePanel";
 
 function App() {
-    const planet = "earth";
     const [loaded, setLoaded] = useState(false);
     const resources = useSelector((state: RootState) => state.resources);
     const basicStats = useSelector((state: RootState) => state.basicStats);
@@ -28,6 +28,7 @@ function App() {
     const buildings = useSelector((state: RootState) => state.buildings);
     const dispatch = useDispatch();
 
+    // load data
     useEffect(() => {
         dispatch(loadGame());
         const timeout = setTimeout(() => {
@@ -35,6 +36,8 @@ function App() {
         }, 500);
         return () => clearTimeout(timeout);
     }, []);
+
+    // rework unlock system later
     useEffect(() => {
         if (basicStats.money >= 25) {
             dispatch(enableContentUnlock({id: "moneyUpgradesPanel"}));
@@ -53,6 +56,7 @@ function App() {
         }
     }, [basicStats, buildings, resources, dispatch, keyItems]);
 
+    // used web workers so interval keeps running when browser tab is inactive
     useEffect(() => {
         const interval = setInterval(() => {
             tickHandler(dispatch);
@@ -66,16 +70,17 @@ function App() {
             <div className="absolute top-1 left-1 text-sm">{GAME_VERSION}</div>
             <Header></Header>
             <main className="grid gap-4 max-w-[1600px] w-[1600px] grid-cols-4  grid-rows-4">
-                <ResourceGenerators planet={planet}></ResourceGenerators>
-                <SellResourcesPanel planet={planet}></SellResourcesPanel>
-                <ForgePanel planet={planet}></ForgePanel>
-                <MoneyUpgradesPanel planet={planet}></MoneyUpgradesPanel>
+                <ResourceGenerators></ResourceGenerators>
+                <SellResourcesPanel></SellResourcesPanel>
+                <ForgePanel></ForgePanel>
+                <MoneyUpgradesPanel></MoneyUpgradesPanel>
 
-                <ResourcesPanel planet={planet}></ResourcesPanel>
-                <BuildingsPanel planet={planet}></BuildingsPanel>
+                <ResourcesPanel></ResourcesPanel>
+                <BuildingsPanel></BuildingsPanel>
 
                 <KeyItemsPanel></KeyItemsPanel>
-                <ResearchPanel planet={planet}></ResearchPanel>
+                <ResearchPanel></ResearchPanel>
+                <BattlePanel></BattlePanel>
             </main>
         </>
     ) : (

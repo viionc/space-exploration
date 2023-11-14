@@ -26,7 +26,9 @@ const upgradesSlice = createSlice({
         builder
             .addCase(loadGame, (state) => {
                 const storage = localStorage.getItem("upgrades");
-                state = storage ? JSON.parse(storage) : initialState;
+                if (storage) {
+                    state = Object.assign(state, JSON.parse(storage));
+                }
                 return state;
             })
             .addCase(saveGame, (state) => {

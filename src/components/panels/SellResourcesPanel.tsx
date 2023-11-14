@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Planets, Resource} from "../../types/types";
+import {Resource} from "../../types/types";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../game-state/gameState";
 import {decrementResource} from "../../game-state/slices/resourcesSlice";
@@ -8,15 +8,15 @@ import {calculateMoneyIncome} from "../../utils/calculateMoneyIncome";
 import {ResourceNames} from "../../data/resources";
 import MultiList from "../MultiList";
 
-function SellResourcesPanel({planet}: {planet: Planets}) {
+function SellResourcesPanel() {
     const [multi, setMulti] = useState(1);
 
     const {sellResourcesPanel} = useSelector((state: RootState) => state.unlockedContent);
-    const resources = useSelector((state: RootState) => state.resources).filter((res) => res.planet === planet);
+    const resources = useSelector((state: RootState) => state.resources);
     const dispatch = useDispatch();
 
     const sellResource = (id: ResourceNames) => {
-        const resource = resources.find((_res) => _res.id === id && _res.planet === planet) as Resource;
+        const resource = resources.find((_res) => _res.id === id) as Resource;
 
         const {amountSold, moneyObtained} = calculateMoneyIncome(resource, multi);
         dispatch(incrementBasicStat({id: "money", amount: moneyObtained}));

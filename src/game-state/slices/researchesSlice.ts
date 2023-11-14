@@ -66,7 +66,9 @@ const researchesSlice = createSlice({
         builder
             .addCase(loadGame, (state) => {
                 const storage = localStorage.getItem("researches");
-                state = storage ? JSON.parse(storage) : initialState;
+                if (storage) {
+                    state = Object.assign(state, JSON.parse(storage));
+                }
                 return state;
             })
             .addCase(saveGame, (state) => {

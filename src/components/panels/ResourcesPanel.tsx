@@ -1,13 +1,12 @@
 import {useSelector} from "react-redux";
 import {RootState} from "../../game-state/gameState";
-import {Planets} from "../../types/types";
 import {abbreviateNumber} from "js-abbreviation-number";
 import {ABBR_SYMBOLS} from "../../utils/constants";
 import {calculateBasedOnBuilding} from "../../utils/calculateResourceIncome";
 
-function ResourcesPanel({planet}: {planet: Planets}) {
+function ResourcesPanel() {
     // const {contentUnlocks, resources} = useGameStateContext();
-    const resources = useSelector((state: RootState) => state.resources).filter((res) => res.planet === planet && res.totalFound > 0);
+    const resources = useSelector((state: RootState) => state.resources).filter((res) => res.totalFound > 0);
     const upgrades = useSelector((state: RootState) => state.upgrades);
     const {resourcesPanel} = useSelector((state: RootState) => state.unlockedContent);
     return (

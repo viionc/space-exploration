@@ -1,4 +1,4 @@
-import {Planets, ResearchProps} from "../../types/types";
+import {ResearchProps} from "../../types/types";
 import RESEARCHES from "../../data/researches";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../game-state/gameState";
@@ -8,7 +8,7 @@ import format from "format-duration";
 import Spinner from "../Spinner";
 import {useState} from "react";
 
-function ResearchPanel({planet}: {planet: Planets}) {
+function ResearchPanel() {
     const {money} = useSelector((state: RootState) => state.basicStats);
     const {researchUnlocked} = useSelector((state: RootState) => state.unlockedContent);
     const researches = useSelector((state: RootState) => state.researches);
@@ -19,7 +19,7 @@ function ResearchPanel({planet}: {planet: Planets}) {
 
     const availableResearches = RESEARCHES.filter((research) => {
         const hasKeyItem = keyItems[research.unlockRequirement];
-        if (research.planet === planet && hasKeyItem) {
+        if (hasKeyItem) {
             return research;
         }
     }).sort((a, b) => {

@@ -31,6 +31,7 @@ export type ContentUnlocksProps = {
     buildingsPanel: boolean;
     researchUnlocked: boolean;
     forge: boolean;
+    battlePanel: boolean;
 };
 
 export type SimpleUpgradeProps = {

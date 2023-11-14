@@ -1,4 +1,4 @@
-import {Planets, SimpleUpgradeProps} from "../../types/types";
+import {SimpleUpgradeProps} from "../../types/types";
 import UPGRADES from "../../data/upgrades";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../game-state/gameState";
@@ -8,7 +8,7 @@ import checkIfMeetsRequirements from "../../utils/checkIfMeetsRequirements";
 import {ABBR_SYMBOLS} from "../../utils/constants";
 import {abbreviateNumber} from "js-abbreviation-number";
 
-function MoneyUpgradesPanel({planet}: {planet: Planets}) {
+function MoneyUpgradesPanel() {
     const {money} = useSelector((state: RootState) => state.basicStats);
     const {moneyUpgradesPanel} = useSelector((state: RootState) => state.unlockedContent);
     const upgrades = useSelector((state: RootState) => state.upgrades);
@@ -16,7 +16,7 @@ function MoneyUpgradesPanel({planet}: {planet: Planets}) {
 
     const availableUpgrades = UPGRADES.filter((upgrade) => {
         const hasRequirements = checkIfMeetsRequirements(upgrade.unlockRequirements);
-        if (planet === upgrade.planet && !upgrades[upgrade.id] && hasRequirements) {
+        if (!upgrades[upgrade.id] && hasRequirements) {
             return upgrade;
         }
     }).sort((a, b) => a.price - b.price);

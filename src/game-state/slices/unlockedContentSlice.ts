@@ -4,15 +4,7 @@ import {ContentUnlocksProps} from "../../types/types";
 const saveGame = createAction("saveGame");
 const loadGame = createAction("loadGame");
 
-const initialState: ContentUnlocksProps = {
-    sellResourcesPanel: false,
-    resourcesPanel: false,
-    keyItemsPanel: false,
-    moneyUpgradesPanel: false,
-    buildingsPanel: false,
-    researchUnlocked: false,
-    forge: false,
-};
+const initialState: Partial<ContentUnlocksProps> = {};
 
 export type ContentUnlocksReducerAction = {
     payload: {
@@ -33,7 +25,9 @@ const unlockedContentSlice = createSlice({
         builder
             .addCase(loadGame, (state) => {
                 const storage = localStorage.getItem("unlockedContent");
-                state = storage ? JSON.parse(storage) : initialState;
+                if (storage) {
+                    state = Object.assign(state, JSON.parse(storage));
+                }
                 return state;
             })
             .addCase(saveGame, (state) => {

@@ -7,6 +7,7 @@ import buildingsReducer from "./slices/buildingsSlice";
 import researchesReducer from "./slices/researchesSlice";
 import forgeReducer from "./slices/forgeSlice";
 import basicStatsReducer from "./slices/basicStatsSlice";
+import battleReducer from "./slices/battleSlice";
 
 export const gameState = configureStore({
     reducer: {
@@ -18,6 +19,7 @@ export const gameState = configureStore({
         buildings: buildingsReducer,
         researches: researchesReducer,
         forge: forgeReducer,
+        battle: battleReducer,
     },
 });
 
