@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import {Planets} from "../../types/types";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../game-state/gameState";

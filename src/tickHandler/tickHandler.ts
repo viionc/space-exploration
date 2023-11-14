@@ -8,7 +8,6 @@ import {ResourceNames} from "../data/resources";
 import {updateForgeItem} from "../game-state/slices/forgeSlice";
 import FORGE_DATA from "../data/forge";
 import {saveGame} from "../game-state/slices/saveGame";
-import UPGRADES from "../data/upgrades";
 import {KeyItemNames} from "../data/keyItems";
 import {calculateBasedOnBuilding} from "../utils/calculateResourceIncome";
 

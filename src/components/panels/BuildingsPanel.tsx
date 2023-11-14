@@ -13,8 +13,6 @@ import {ABBR_SYMBOLS} from "../../utils/constants";
 
 function BuildingsPanel({planet}: {planet: Planets}) {
     const buildings = useSelector((state: RootState) => state.buildings);
-    const resources = useSelector((state: RootState) => state.resources);
-    const basicStats = useSelector((state: RootState) => state.basicStats);
     const {buildingsPanel} = useSelector((state: RootState) => state.unlockedContent);
 
     const dispatch = useDispatch();

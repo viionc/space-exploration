@@ -1,9 +1,8 @@
 import {useSelector} from "react-redux";
-import {Planets} from "../../types/types";
 import {RootState} from "../../game-state/gameState";
 import KEY_ITEMS from "../../data/keyItems";
 
-function KeyItemsPanel({planet}: {planet: Planets}) {
+function KeyItemsPanel() {
     const {keyItemsPanel} = useSelector((state: RootState) => state.unlockedContent);
     const keyItems = useSelector((state: RootState) => state.keyItems);
     const obtainedKeyItems = KEY_ITEMS.filter((_keyItem) => keyItems[_keyItem.id]);

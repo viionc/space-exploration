@@ -74,7 +74,7 @@ function App() {
                 <ResourcesPanel planet={planet}></ResourcesPanel>
                 <BuildingsPanel planet={planet}></BuildingsPanel>
 
-                <KeyItemsPanel planet={planet}></KeyItemsPanel>
+                <KeyItemsPanel></KeyItemsPanel>
                 <ResearchPanel planet={planet}></ResearchPanel>
             </main>
         </>

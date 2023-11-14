@@ -16,6 +16,6 @@ export default calculateResourceIncome;
 
 export const calculateBasedOnBuilding = (building: keyof Buildings, upgrades: Partial<UpgradesProps>): number => {
     const stoneQuarryUpgrades = UPGRADES.filter((_upgrade) => _upgrade.id.startsWith(building) && upgrades[_upgrade.id]);
-    const amount = 1 + stoneQuarryUpgrades.length;
+    const amount = stoneQuarryUpgrades.length;
     return amount;
 };
