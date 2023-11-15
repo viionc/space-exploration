@@ -2,25 +2,29 @@ import {createAction, createSlice} from "@reduxjs/toolkit";
 
 const saveGame = createAction("saveGame");
 const loadGame = createAction("loadGame");
+export const updatePlayerBattleStats = createAction<BasicStatsActionPayload>("updatePlayerBattleStats");
 
 export type BasicStats = {
     money: number;
     totalMoney: number;
     totalEarthMeteoriteFound: number;
     playerAttackPower: number;
+    playerAttackSpeed: number;
 };
 export type BasicStatsAction = {
-    payload: {
-        id: keyof BasicStats;
-        amount: number;
-    };
+    payload: BasicStatsActionPayload;
     type: string;
+};
+export type BasicStatsActionPayload = {
+    id: keyof BasicStats;
+    amount: number;
 };
 const initialState: BasicStats = {
     money: 0,
     totalMoney: 0,
     totalEarthMeteoriteFound: 0,
     playerAttackPower: 1,
+    playerAttackSpeed: 5,
 };
 const basicStatsSlice = createSlice({
     name: "basicStats",
@@ -47,6 +51,10 @@ const basicStatsSlice = createSlice({
             })
             .addCase(saveGame, (state) => {
                 localStorage.setItem("basicStats", JSON.stringify(state));
+            })
+            .addCase(updatePlayerBattleStats, (state, action: BasicStatsAction) => {
+                const {payload} = action;
+                state[payload.id] = payload.amount;
             });
     },
 });

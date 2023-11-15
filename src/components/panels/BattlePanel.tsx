@@ -7,12 +7,15 @@ import {startBattle} from "../../game-state/slices/battleSlice";
 function BattlePanel() {
     // const {battlePanel} = useSelector((state: RootState) => state.unlockedContent);
     const battle = useSelector((state: RootState) => state.battle);
+    const basicStats = useSelector((state: RootState) => state.basicStats);
     const dispatch = useDispatch();
     const start = () => {
         if (battle.isBattleActive) return;
         const enemies = Object.keys(ENEMIES) as EnemyNames[];
         const roll = Math.ceil(Math.random() * enemies.length) - 1;
-        dispatch(startBattle(enemies[roll]));
+        dispatch(
+            startBattle({playerAttackPower: basicStats.playerAttackPower, playerAttackSpeed: basicStats.playerAttackSpeed, enemyId: enemies[roll]})
+        );
     };
 
     return (

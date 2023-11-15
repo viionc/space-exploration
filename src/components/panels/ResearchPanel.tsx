@@ -7,19 +7,19 @@ import {decrementBasicStat} from "../../game-state/slices/basicStatsSlice";
 import format from "format-duration";
 import Spinner from "../Spinner";
 import {useState} from "react";
+import checkIfMeetsRequirements from "../../utils/checkIfMeetsRequirements";
 
 function ResearchPanel() {
     const {money} = useSelector((state: RootState) => state.basicStats);
     const {researchUnlocked} = useSelector((state: RootState) => state.unlockedContent);
     const researches = useSelector((state: RootState) => state.researches);
-    const keyItems = useSelector((state: RootState) => state.keyItems);
     const [hideCompleted, setHideCompleted] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
     const availableResearches = RESEARCHES.filter((research) => {
-        const hasKeyItem = keyItems[research.unlockRequirement];
-        if (hasKeyItem) {
+        const hasRequirements = checkIfMeetsRequirements(research.unlockRequirements);
+        if (hasRequirements) {
             return research;
         }
     }).sort((a, b) => {

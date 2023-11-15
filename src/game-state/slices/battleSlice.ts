@@ -1,5 +1,9 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createAction, createSlice} from "@reduxjs/toolkit";
 import ENEMIES, {Enemy, EnemyNames} from "../../data/enemies";
+import {BasicStatsAction, updatePlayerBattleStats} from "./basicStatsSlice";
+
+const saveGame = createAction("saveGame");
+const loadGame = createAction("loadGame");
 
 export type BattleState = {
     isBattleActive: boolean;
@@ -8,12 +12,20 @@ export type BattleState = {
 
 export type BattleStatus = {
     currentEnemyHp: number;
+    currentAttackTimer: number;
+    playerAttackPower: number;
+    playerAttackSpeed: number;
     enemy: Enemy;
 };
 
 export type BattleStartAction = {
-    payload: EnemyNames;
+    payload: BattleStartPayload;
     type: string;
+};
+export type BattleStartPayload = {
+    enemyId: EnemyNames;
+    playerAttackSpeed: number;
+    playerAttackPower: number;
 };
 export type ReduceEnemyHpAction = {
     payload: number;
@@ -24,6 +36,9 @@ const initialState: BattleState = {
     isBattleActive: false,
     battleStatus: {
         currentEnemyHp: 0,
+        currentAttackTimer: 5,
+        playerAttackPower: 1,
+        playerAttackSpeed: 5,
         enemy: {} as Enemy,
     },
 };
@@ -34,24 +49,53 @@ const battleSlice = createSlice({
     reducers: {
         startBattle: (state, action: BattleStartAction) => {
             const {payload} = action;
-            const enemy = ENEMIES[payload];
+            const enemy = ENEMIES[payload.enemyId];
             state.battleStatus.enemy = enemy;
             state.battleStatus.currentEnemyHp = enemy.maxHp;
+            state.battleStatus.playerAttackPower = payload.playerAttackPower;
+            state.battleStatus.playerAttackSpeed = payload.playerAttackSpeed;
+            state.battleStatus.currentAttackTimer = payload.playerAttackSpeed - 1;
             state.isBattleActive = true;
         },
         endBattle: (state) => {
             state.isBattleActive = false;
             state.battleStatus.enemy = {} as Enemy;
         },
-        reduceEnemyHp: (state, action: ReduceEnemyHpAction) => {
-            const {payload} = action;
-            state.battleStatus.currentEnemyHp -= payload;
-            if (state.battleStatus.currentEnemyHp === 0) {
-                battleSlice.caseReducers.endBattle(state);
+        reduceBattleTimer: (state) => {
+            if (state.battleStatus.currentAttackTimer === 0) {
+                battleSlice.caseReducers.reduceEnemyHp(state);
+                state.battleStatus.currentAttackTimer = state.battleStatus.playerAttackSpeed;
             }
+            state.battleStatus.currentAttackTimer -= 1;
+        },
+        reduceEnemyHp: (state) => {
+            state.battleStatus.currentEnemyHp -= state.battleStatus.playerAttackPower;
+            // if (state.battleStatus.currentEnemyHp === 0) {
+            //     battleSlice.caseReducers.endBattle(state);
+            // }
         },
     },
+    extraReducers: (builder) =>
+        builder
+            .addCase(updatePlayerBattleStats, (state, action: BasicStatsAction) => {
+                const {payload} = action;
+                if (payload.id === "playerAttackPower") {
+                    state.battleStatus.playerAttackPower = payload.amount;
+                } else if (payload.id === "playerAttackSpeed") {
+                    state.battleStatus.playerAttackSpeed = payload.amount;
+                }
+            })
+            .addCase(loadGame, (state) => {
+                const storage = localStorage.getItem("battle");
+                if (storage) {
+                    state = Object.assign(state, JSON.parse(storage));
+                }
+                return state;
+            })
+            .addCase(saveGame, (state) => {
+                localStorage.setItem("battle", JSON.stringify(state));
+            }),
 });
 
 export default battleSlice.reducer;
-export const {startBattle, reduceEnemyHp} = battleSlice.actions;
+export const {startBattle, reduceEnemyHp, reduceBattleTimer, endBattle} = battleSlice.actions;

@@ -2,7 +2,7 @@ import {Buildings} from "../data/buildings";
 import {KeyItemNames} from "../data/keyItems";
 import {ResearchNames} from "../data/researches";
 import {ResourceNames} from "../data/resources";
-import {UpgradesNames} from "../data/upgrades";
+import {UpgradeEffectTypes, UpgradesNames} from "../data/upgrades";
 import {BasicStats} from "../game-state/slices/basicStatsSlice";
 
 export type Planets = "earth";
@@ -40,9 +40,14 @@ export type SimpleUpgradeProps = {
     resource: ResourceNames;
     label: string;
     price: number;
-    multiplier: number;
+    effect: UpgradeEffect;
     unlockRequirements: UnlockRequirement[];
     description: string;
+};
+
+export type UpgradeEffect = {
+    type: UpgradeEffectTypes;
+    value?: number;
 };
 
 export type ResourceReducerAction = {
@@ -92,7 +97,7 @@ export type ResearchProps = {
     durationIncreasePerLevel: number;
     moneyIncreasePerLevel: number;
     requiredMoney: number;
-    unlockRequirement: KeyItemNames;
+    unlockRequirements: UnlockRequirement[];
     effect: string;
     resource?: ResourceNames;
     maxLevel?: number;

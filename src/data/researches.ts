@@ -16,7 +16,7 @@ const RESEARCHES: ResearchProps[] = [
         increment: 50,
         requiredMoney: 250,
         maxLevel: 9,
-        unlockRequirement: "suspiciousMeteorite",
+        unlockRequirements: [{type: "keyItem", id: "suspiciousMeteorite"}],
         resource: "meteorite",
     },
     {
@@ -30,7 +30,10 @@ const RESEARCHES: ResearchProps[] = [
         moneyIncreasePerLevel: 1,
         requiredMoney: 250,
         maxLevel: 1,
-        unlockRequirement: "mysteriousRock",
+        unlockRequirements: [
+            {type: "keyItem", id: "mysteriousRock"},
+            {type: "building", id: "researchFacility"},
+        ],
         resource: "stone",
     },
 ];
