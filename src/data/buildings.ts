@@ -5,6 +5,7 @@ export type Buildings = {
     meteoriteMine: boolean;
     stoneQuarry: boolean;
     forge: boolean;
+    rocketStation: boolean;
 };
 
 const BUILDINGS: SimpleBuildingProps[] = [
@@ -81,6 +82,27 @@ const BUILDINGS: SimpleBuildingProps[] = [
             {type: "resource", id: "meteorite", amount: 250},
         ],
         description: "Simple mine that will automaticaly find meteorite.",
+        obtained: false,
+    },
+    {
+        id: "rocketStation",
+        label: "Rocket Station",
+        planet: "earth",
+        price: [
+            {type: "basicStats", id: "money", label: "Money", amount: 10000},
+            {type: "resource", id: "stone", label: "Stone", amount: 1000},
+            {type: "resource", id: "ironBar", label: "Iron Bar", amount: 150},
+            {type: "resource", id: "meteorite", label: "Meteorite", amount: 500},
+        ],
+        unlockRequirements: [
+            {
+                type: "building",
+                id: "meteoriteMine",
+            },
+            {type: "resource", id: "meteorite", amount: 250},
+            {type: "keyItem", id: "suspiciousMeteorite"},
+        ],
+        description: "Rocket Station allows to build rockets and send them to space.",
         obtained: false,
     },
 ];

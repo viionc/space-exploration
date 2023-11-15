@@ -1,5 +1,5 @@
 import {AnyAction, Dispatch} from "redux";
-import {updateResearchDuration} from "../game-state/slices/researchesSlice";
+import {completeResearch, updateResearchDuration} from "../game-state/slices/researchesSlice";
 import {gameState} from "../game-state/gameState";
 import {ResourcesReducerActionPayload, incrementResource, incrementResources} from "../game-state/slices/resourcesSlice";
 import RESOURCE_RARE_DROPS from "../data/rareDrops";
@@ -10,19 +10,25 @@ import FORGE_DATA from "../data/forge";
 import {saveGame} from "../game-state/slices/saveGame";
 import {KeyItemNames} from "../data/keyItems";
 import {calculateBasedOnBuilding} from "../utils/calculateResourceIncome";
-import {endBattle, reduceBattleTimer} from "../game-state/slices/battleSlice";
-import {BasicStats, incrementBasicStat} from "../game-state/slices/basicStatsSlice";
+import {endBattle, reduceBattleCooldown, reduceBattleTimer} from "../game-state/slices/battleSlice";
+import {BasicStats, incrementBasicStat, updatePlayerBattleStats} from "../game-state/slices/basicStatsSlice";
 
 const SAVE_TIMER = 60; // one minute
 let currentSaveTimer = SAVE_TIMER;
 
 const tickHandler = (dispatch: Dispatch<AnyAction>) => {
-    const {researches, buildings, forge, upgrades, battle} = gameState.getState();
+    const {researches, buildings, forge, upgrades, battle, keyItems} = gameState.getState();
     const resourceUpdates: ResourcesReducerActionPayload[] = [];
     const rareDrops: ResourcesReducerActionPayload[] = [];
 
     researches.activeResearches.forEach((research) => {
         dispatch(updateResearchDuration({id: research.id, amount: 1}));
+        if (research.duration === 1) {
+            dispatch(completeResearch({id: research.id}));
+            if (research.id === "rocketPower") {
+                dispatch(updatePlayerBattleStats({id: "playerAttackPower", amount: 1}));
+            }
+        }
     });
     if (buildings.meteoriteMine) {
         resourceUpdates.push({id: "meteorite" as ResourceNames, amount: 1});
@@ -41,12 +47,12 @@ const tickHandler = (dispatch: Dispatch<AnyAction>) => {
     });
 
     if (battle.isBattleActive) {
-        if (battle.battleStatus.currentEnemyHp === 0) {
+        if (battle.battleStatus.currentEnemyHp <= 0) {
             battle.battleStatus.enemy.loot.forEach((loot) => {
                 if (loot.type === "basicStats") {
                     const lootRoll = Math.ceil(Math.random() * (loot.baseMaxAmount - loot.baseMinAmount) + loot.baseMinAmount);
                     dispatch(incrementBasicStat({id: loot.id as keyof BasicStats, amount: lootRoll}));
-                } else if (loot.type === "keyItem") {
+                } else if (loot.type === "keyItem" && !keyItems[loot.id as KeyItemNames]) {
                     dispatch(enableKeyItem({id: loot.id as KeyItemNames}));
                 } else if (loot.type === "resource") {
                     const lootRoll = Math.ceil(Math.random() * (loot.baseMaxAmount - loot.baseMinAmount) + loot.baseMinAmount);
@@ -56,6 +62,8 @@ const tickHandler = (dispatch: Dispatch<AnyAction>) => {
             dispatch(endBattle());
         }
         dispatch(reduceBattleTimer());
+    } else if (battle.battleCooldown > 0) {
+        dispatch(reduceBattleCooldown());
     }
 
     resourceUpdates.push(...rareDrops);

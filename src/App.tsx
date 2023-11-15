@@ -26,6 +26,7 @@ function App() {
     const basicStats = useSelector((state: RootState) => state.basicStats);
     const keyItems = useSelector((state: RootState) => state.keyItems);
     const buildings = useSelector((state: RootState) => state.buildings);
+    const unlockedContent = useSelector((state: RootState) => state.unlockedContent);
     const dispatch = useDispatch();
 
     // load data
@@ -39,22 +40,22 @@ function App() {
 
     // rework unlock system later
     useEffect(() => {
-        if (basicStats.money >= 25) {
+        if (basicStats.money >= 25 && !unlockedContent.moneyUpgradesPanel) {
             dispatch(enableContentUnlock({id: "moneyUpgradesPanel"}));
         }
-        if ((resources.find((_res) => _res.id === "stone")?.totalFound || 0) >= 250) {
+        if ((resources.find((_res) => _res.id === "stone")?.totalFound || 0) >= 250 && !unlockedContent.buildingsPanel) {
             dispatch(enableContentUnlock({id: "buildingsPanel"}));
         }
-        if (buildings.researchFacility) {
+        if (buildings.researchFacility && !unlockedContent.researchUnlocked) {
             dispatch(enableContentUnlock({id: "researchUnlocked"}));
         }
-        if (buildings.forge) {
+        if (buildings.forge && !unlockedContent.forge) {
             dispatch(enableContentUnlock({id: "forge"}));
         }
-        if (keyItems["mysteriousRock"]) {
+        if (keyItems["mysteriousRock"] && !unlockedContent.keyItemsPanel) {
             dispatch(enableContentUnlock({id: "keyItemsPanel"}));
         }
-    }, [basicStats, buildings, resources, dispatch, keyItems]);
+    }, [basicStats, buildings, resources, dispatch, keyItems, unlockedContent]);
 
     // used web workers so interval keeps running when browser tab is inactive
     useEffect(() => {

@@ -8,6 +8,7 @@ const loadGame = createAction("loadGame");
 export type BattleState = {
     isBattleActive: boolean;
     battleStatus: BattleStatus;
+    battleCooldown: number;
 };
 
 export type BattleStatus = {
@@ -34,6 +35,7 @@ export type ReduceEnemyHpAction = {
 
 const initialState: BattleState = {
     isBattleActive: false,
+    battleCooldown: 0,
     battleStatus: {
         currentEnemyHp: 0,
         currentAttackTimer: 5,
@@ -60,6 +62,10 @@ const battleSlice = createSlice({
         endBattle: (state) => {
             state.isBattleActive = false;
             state.battleStatus.enemy = {} as Enemy;
+            state.battleCooldown = 30;
+        },
+        reduceBattleCooldown: (state) => {
+            state.battleCooldown -= 1;
         },
         reduceBattleTimer: (state) => {
             if (state.battleStatus.currentAttackTimer === 0) {
@@ -74,15 +80,20 @@ const battleSlice = createSlice({
             //     battleSlice.caseReducers.endBattle(state);
             // }
         },
+        cancelBattle: (state) => {
+            state.isBattleActive = false;
+            state.battleStatus.enemy = {} as Enemy;
+            state.battleCooldown = 30;
+        },
     },
     extraReducers: (builder) =>
         builder
             .addCase(updatePlayerBattleStats, (state, action: BasicStatsAction) => {
                 const {payload} = action;
                 if (payload.id === "playerAttackPower") {
-                    state.battleStatus.playerAttackPower = payload.amount;
+                    state.battleStatus.playerAttackPower += payload.amount;
                 } else if (payload.id === "playerAttackSpeed") {
-                    state.battleStatus.playerAttackSpeed = payload.amount;
+                    state.battleStatus.playerAttackSpeed -= payload.amount;
                 }
             })
             .addCase(loadGame, (state) => {
@@ -98,4 +109,4 @@ const battleSlice = createSlice({
 });
 
 export default battleSlice.reducer;
-export const {startBattle, reduceEnemyHp, reduceBattleTimer, endBattle} = battleSlice.actions;
+export const {startBattle, reduceEnemyHp, reduceBattleTimer, endBattle, reduceBattleCooldown, cancelBattle} = battleSlice.actions;

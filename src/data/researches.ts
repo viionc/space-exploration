@@ -1,6 +1,6 @@
 import {ResearchProps} from "../types/types";
 
-export type ResearchNames = "refineMeteorite" | "stoneQuarryEfficiency";
+export type ResearchNames = "refineMeteorite" | "stoneQuarryEfficiency" | "rocketPower";
 
 const RESEARCHES: ResearchProps[] = [
     {
@@ -35,6 +35,19 @@ const RESEARCHES: ResearchProps[] = [
             {type: "building", id: "researchFacility"},
         ],
         resource: "stone",
+    },
+    {
+        id: "rocketPower",
+        label: "Rocket Power",
+        planet: "earth",
+        description: "Continously upgrading rocket power systems to make them stronger.",
+        effect: "Increases attack power by 1.",
+        duration: 1,
+        durationIncreasePerLevel: 1,
+        moneyIncreasePerLevel: 1,
+        requiredMoney: 1,
+        maxLevel: 9,
+        unlockRequirements: [{type: "building", id: "rocketStation"}],
     },
 ];
 export default RESEARCHES;

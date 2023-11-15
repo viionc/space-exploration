@@ -53,8 +53,9 @@ const basicStatsSlice = createSlice({
                 localStorage.setItem("basicStats", JSON.stringify(state));
             })
             .addCase(updatePlayerBattleStats, (state, action: BasicStatsAction) => {
+                console.log("test");
                 const {payload} = action;
-                state[payload.id] = payload.amount;
+                state[payload.id] += payload.amount;
             });
     },
 });

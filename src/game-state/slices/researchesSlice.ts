@@ -60,6 +60,12 @@ const researchesSlice = createSlice({
             const {id} = payload;
             state.completedResearches[id] ? ((state.completedResearches[id] as number) += 1) : (state.completedResearches[id] = 1);
             state.activeResearches = state.activeResearches.filter((research) => research.duration > 0);
+            // if (id === "rocketPower") {
+            //     researchesSlice.caseReducers.updatePlayerBattleStats(state, {
+            //         type: "updatePlayerBattleStats",
+            //         payload: {id: "playerAttackPower", amount: 1},
+            //     });
+            // }
         },
     },
     extraReducers: (builder) => {

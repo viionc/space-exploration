@@ -10,7 +10,7 @@ function BattlePanel() {
     const basicStats = useSelector((state: RootState) => state.basicStats);
     const dispatch = useDispatch();
     const start = () => {
-        if (battle.isBattleActive) return;
+        if (battle.isBattleActive || battle.battleCooldown > 0) return;
         const enemies = Object.keys(ENEMIES) as EnemyNames[];
         const roll = Math.ceil(Math.random() * enemies.length) - 1;
         dispatch(
@@ -24,9 +24,12 @@ function BattlePanel() {
             {battle.isBattleActive ? (
                 <BattleScreen></BattleScreen>
             ) : (
-                <button onClick={start} className="px-2 py-2 border hover:border-green-500">
-                    Start Battle
-                </button>
+                <>
+                    {battle.battleCooldown > 0 ? <p>{battle.battleCooldown}</p> : null}
+                    <button onClick={start} className="px-2 py-2 border hover:border-green-500">
+                        Send Rocket
+                    </button>
+                </>
             )}
         </article>
     );
