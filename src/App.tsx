@@ -19,6 +19,7 @@ import {enableContentUnlock} from "./game-state/slices/unlockedContentSlice";
 import {setInterval, clearInterval} from "worker-timers";
 import {GAME_VERSION} from "./utils/constants";
 import BattlePanel from "./components/panels/BattlePanel";
+import {Tabs} from "./types/types";
 
 function App() {
     const [loaded, setLoaded] = useState(false);
@@ -65,23 +66,28 @@ function App() {
         return () => clearInterval(interval);
     }, []);
 
+    const [activeTab, setActiveTab] = useState<Tabs>("main");
     return loaded ? (
         <>
             <ToastContainer theme="dark" closeOnClick pauseOnHover />
             <div className="absolute top-1 left-1 text-sm">{GAME_VERSION}</div>
-            <Header></Header>
-            <main className="grid gap-4 max-w-[1600px] w-[1600px] grid-cols-4  grid-rows-4">
-                <ResourceGenerators></ResourceGenerators>
-                <SellResourcesPanel></SellResourcesPanel>
-                <ForgePanel></ForgePanel>
-                <MoneyUpgradesPanel></MoneyUpgradesPanel>
+            <Header activeTab={activeTab} callback={setActiveTab}></Header>
+            <main className="grid gap-4 max-w-[1600px] w-[1600px] grid-cols-4 grid-rows-main h-full">
+                {activeTab === "main" ? (
+                    <>
+                        <ResourceGenerators></ResourceGenerators>
+                        <SellResourcesPanel></SellResourcesPanel>
+                        <ForgePanel></ForgePanel>
+                        <MoneyUpgradesPanel></MoneyUpgradesPanel>
 
-                <ResourcesPanel></ResourcesPanel>
-                <BuildingsPanel></BuildingsPanel>
+                        <ResourcesPanel></ResourcesPanel>
+                        <BuildingsPanel></BuildingsPanel>
 
-                <KeyItemsPanel></KeyItemsPanel>
-                <ResearchPanel></ResearchPanel>
-                <BattlePanel></BattlePanel>
+                        <KeyItemsPanel></KeyItemsPanel>
+                    </>
+                ) : null}
+                {activeTab === "researches" ? <ResearchPanel></ResearchPanel> : null}
+                {activeTab === "battle" ? <BattlePanel></BattlePanel> : null}
             </main>
         </>
     ) : (

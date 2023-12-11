@@ -5,6 +5,7 @@ import {ResourceNames} from "../data/resources";
 import {UpgradeEffectTypes, UpgradesNames} from "../data/upgrades";
 import {BasicStats} from "../game-state/slices/basicStatsSlice";
 
+export type Tabs = "main" | "researches" | "battle";
 export type Planets = "earth";
 export type GameResourcesProps = Record<Planets, Partial<ResourcesProps>>;
 export type GameKeyItemsProps = Record<Planets, Partial<KeyItemsProps>>;

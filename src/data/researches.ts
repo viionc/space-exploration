@@ -10,7 +10,7 @@ const RESEARCHES: ResearchProps[] = [
         description:
             "After extensively researching properties of Suspicious Meteorite we finally came up with an ability to refine meteorite and make it more valuable.",
         effect: "Increases value of meteorite you find by 1 per level.",
-        duration: 120,
+        duration: 5,
         durationIncreasePerLevel: 2,
         moneyIncreasePerLevel: 2,
         increment: 50,

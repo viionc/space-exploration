@@ -8,7 +8,7 @@ function KeyItemsPanel() {
     const obtainedKeyItems = KEY_ITEMS.filter((_keyItem) => keyItems[_keyItem.id]);
 
     return (
-        <article className={`border rounded-md w-full p-4 transition-all duration-500  ${keyItemsPanel ? "opacity-1" : "opacity-0"}`}>
+        <article className={`border rounded-md w-full h-[20rem] p-4 transition-all duration-500  ${keyItemsPanel ? "opacity-1" : "opacity-0"}`}>
             <h2 className="text-2xl mb-4">Key Items:</h2>
             <ul>
                 {obtainedKeyItems.map((keyItem) => {

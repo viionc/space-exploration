@@ -36,7 +36,7 @@ function ResearchPanel() {
     };
     return (
         <article
-            className={`border rounded-md w-full p-4 transition-all duration-500 col-span-3 row-span-2 ${
+            className={`border min-h-[20rem] rounded-md w-full p-4  transition-all duration-500 col-span-4 row-span-2 ${
                 researchUnlocked ? "opacity-1" : "opacity-0"
             }`}>
             <div className="flex justify-between items-start">
@@ -67,7 +67,7 @@ function ResearchPanel() {
                                 className={`relative px-4 py-2 border flex w-full h-full z-10 ${
                                     canBuy ? "border-white" : isMaxLevel ? "border-white" : "border-red-500"
                                 }
-                                    ${!isMaxLevel ? "hover:border-green-500 cursor-pointer" : ""}
+                                    ${!isMaxLevel && canBuy && !isActive ? "hover:border-green-500 cursor-pointer" : ""}
                                     `}>
                                 <div className="flex flex-col gap-2 items-start w-full">
                                     <div className="w-full flex justify-between">
